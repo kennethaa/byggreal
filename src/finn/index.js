@@ -62,8 +62,8 @@ export default function finn(id) {
                         }
 
                         const image = {
-                            src: attributes.src || attributes['data-src'],
-                            srcset: attributes.srcset || null,
+                            src: attributes.src || attributes['data-src'] || null,
+                            srcset: attributes.srcset || attributes['data-srcset'] || null,
                             sizes: attributes.sizes || null,
                             alt: attributes.alt || null,
                             index: attributes['data-index'] || null
