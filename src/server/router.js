@@ -6,6 +6,9 @@ import finn from '../finn';
 const NOT_FOUND = 'Not found';
 const INVALID_ID = 'Invalid id';
 
+// routes
+const API = 'api';
+
 // params
 const ID = 'id';
 
@@ -18,7 +21,7 @@ function sendResponse(res, data, meta = null) {
 }
 
 function send404(res, error = NOT_FOUND) {
-    setAge(res, 600);
+    setAge(res, 10);
     return res.status(404).json({
         error
     });
@@ -26,7 +29,7 @@ function send404(res, error = NOT_FOUND) {
 
 const router = new Router();
 
-router.use((req, res, next) => {
+router.use(`/${API}/*`, (req, res, next) => {
     // CORS on ExpressJS
     // http://enable-cors.org/server_expressjs.html
     res.header('Access-Control-Allow-Origin', '*');
@@ -43,7 +46,7 @@ router.param(ID, (req, res, next, id) => {
     return next();
 });
 
-router.get(`/api/finn/:${ID}`, (req, res, next) => {
+router.get(`/${API}/finn/:${ID}`, (req, res, next) => {
     finn(req.params.id)
     .then((text) => sendResponse(res, text))
     .catch(next);

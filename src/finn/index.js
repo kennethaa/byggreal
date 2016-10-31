@@ -1,3 +1,4 @@
+import { Parser } from 'htmlparser2';
 import getFetchOptions from '../utils/getFetchOptions';
 
 export default function finn(id) {
@@ -12,7 +13,71 @@ export default function finn(id) {
 
             throw new Error(`Finn fails with ${response.status} ${response.statusText} at ${url}`);
         })
-        .then(resolve)
+        .then((text) => {
+            const data = {
+                title: null,
+                description: null,
+                url: null,
+                image: null,
+                images: null
+            };
+
+            const parser = new Parser({
+                onopentag: (name, attributes) => {
+                    if (name === 'meta' && attributes) {
+                        if (attributes.property === 'og:title') {
+                            data.title = attributes.content;
+                        }
+
+                        if (attributes.property === 'og:description') {
+                            data.description = attributes.content;
+                        }
+
+                        if (attributes.property === 'og:url') {
+                            data.url = attributes.content;
+                        }
+
+                        if (attributes.property === 'og:image') {
+                            data.image = Object.assign({}, data.image, {
+                                src: attributes.content
+                            });
+                        }
+
+                        if (attributes.property === 'og:image:width') {
+                            data.image = Object.assign({}, data.image, {
+                                width: attributes.content
+                            });
+                        }
+
+                        if (attributes.property === 'og:image:height') {
+                            data.image = Object.assign({}, data.image, {
+                                height: attributes.content
+                            });
+                        }
+                    }
+
+                    if (name === 'img' && attributes && attributes.class === 'centered-image' && attributes['aria-label'] === 'Galleribilde') {
+                        if (!data.images) {
+                            data.images = [];
+                        }
+
+                        const image = {
+                            src: attributes.src || attributes['data-src'],
+                            srcset: attributes.srcset || null,
+                            sizes: attributes.sizes || null,
+                            alt: attributes.alt || null,
+                            index: attributes['data-index'] || null
+                        };
+
+                        data.images.push(image);
+                    }
+                },
+                onend: () => resolve(data)
+            }, { decodeEntities: true });
+
+            parser.write(text);
+            parser.end();
+        })
         .catch(reject);
     });
 }
