@@ -5,7 +5,7 @@ export default function finn(id) {
     return new Promise((resolve, reject) => {
         const url = `http://m.finn.no/${id}`;
 
-        fetch(url, Object.assign({}, getFetchOptions()))
+        fetch(url, getFetchOptions())
         .then((response) => {
             if (response.status >= 200 && response.status < 300) {
                 return response.text();
