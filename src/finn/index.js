@@ -1,7 +1,7 @@
 import { Parser } from 'htmlparser2';
 import getFetchOptions from '../utils/getFetchOptions';
 
-export default function finn(id) {
+export default function getFinnAd(id) {
     return new Promise((resolve, reject) => {
         const url = `http://m.finn.no/${id}`;
 

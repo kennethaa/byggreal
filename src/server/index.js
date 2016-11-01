@@ -1,15 +1,21 @@
 import express from 'express';
-import path from 'path';
+// import path from 'path';
 import compression from 'compression';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import mongoose from 'mongoose';
 import { log, logError } from '../utils/logger';
 import router from './router';
 
 const app = express();
 
+app.set('port', process.env.PORT || 8080);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.DATABASE || 'mongodb://localhost:27017/byggreal');
+
 // Express middlewares
 app.use(compression());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
@@ -30,19 +36,8 @@ app.use(morgan('dev'));
 // }
 
 // Set /public as our static content dir
-app.use(express.static(path.join(process.cwd(), 'public')));
+// app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(router);
-
-// Generic server errors (e.g. not caught by components)
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-    logError(err, req);
-
-    res.status(500).json({
-        error: app.get('env') === 'development' ? err.stack || err.message || err : 'Internal server error'
-    });
-});
-
-app.set('port', process.env.PORT || 8080);
 
 // Finally, start the express server
 app.listen(app.get('port'), (err) => {
