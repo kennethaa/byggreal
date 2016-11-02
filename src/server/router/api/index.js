@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import authenticate from './authenticate';
+import auth from './auth';
 import admin from './admin';
 import finn from './finn';
 import { logError } from '../../../utils/logger';
+import { send500 } from './responses';
 
 const api = new Router();
 
@@ -15,19 +16,14 @@ api.use((req, res, next) => {
     return next();
 });
 
-api.use('/authenticate', authenticate);
+api.use('/auth', auth);
 api.use('/admin', admin);
 api.use('/finn', finn);
 
 api.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     logError(err, req);
 
-    res.status(500).json({
-        data: {
-            meta: null,
-            error: process.env.NODE_ENV === 'development' ? err.stack || err.message || err : 'Internal server error'
-        }
-    });
+    send500(res, err.stack || err.message || err);
 });
 
 export default api;

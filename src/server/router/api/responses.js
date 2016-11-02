@@ -5,32 +5,70 @@ export function send200(res, data, age = 600) {
         setAge(res, age);
     }
     return res.json({
-        meta: {
-            age
-        },
         data
     });
 }
 
-export function send404(res, error = 'Not found', age = 10) {
-    if (age) {
-        setAge(res, 10);
-    }
-    return res.status(404).json({
-        meta: {
-            age
-        },
+export function send200Success(res, message = 'Success') {
+    return res.json({
         data: {
-            error
+            success: true,
+            message
         }
     });
 }
 
-export function send403(res, error = 'No token provided') {
-    return res.status(403).json({
-        meta: null,
+export function send200Token(res, token) {
+    return res.json({
         data: {
-            error
+            success: true,
+            message: 'Enjoy tour token',
+            token
+        }
+    });
+}
+
+export function send401(res, message = 'Unauthorized') {
+    return res.status(401).json({
+        data: {
+            success: false,
+            message
+        }
+    });
+}
+
+export function send403(res, message = 'No token provided') {
+    return res.status(403).json({
+        data: {
+            success: false,
+            message
+        }
+    });
+}
+
+export function send404(res, message = 'Not found') {
+    return res.status(404).json({
+        data: {
+            success: false,
+            message
+        }
+    });
+}
+
+export function send500(res, message) {
+    if (process.env.NODE_ENV === 'production') {
+        return res.status(500).json({
+            data: {
+                success: false,
+                message: 'Internal server error'
+            }
+        });
+    }
+
+    return res.status(500).json({
+        data: {
+            success: false,
+            message
         }
     });
 }
