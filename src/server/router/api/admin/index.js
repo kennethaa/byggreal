@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../../../../models/User';
-import { send200, send401, send403 } from '../responses';
+import { send401, send403 } from '../responses';
 import { SECRET } from '../auth';
+import homes from './homes';
+import lettings from './lettings';
 
 const admin = new Router();
 
@@ -22,14 +23,7 @@ admin.use((req, res, next) => {
     });
 });
 
-if (process.env.NODE_ENV === 'development') {
-    admin.get('/users', (req, res, next) => {
-        User.find({})
-        .then((users) => send200(res, {
-            users
-        }))
-        .catch(next);
-    });
-}
+admin.use('/homes', homes);
+admin.use('/lettings', lettings);
 
 export default admin;

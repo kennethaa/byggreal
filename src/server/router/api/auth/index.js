@@ -2,6 +2,8 @@ import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import User from '../../../../models/User';
+import Home from '../../../../models/Home';
+import Letting from '../../../../models/Letting';
 import { send200Success, send200Token, send401 } from '../responses';
 
 export const SECRET = process.env.SECRET || 'byggreal';
@@ -30,18 +32,54 @@ if (process.env.NODE_ENV === 'development') {
     auth.get('/setup', (req, res, next) => {
         const password = 'admin';
 
-        User.register(new User({ username: 'admin' }), password, (err, user) => {
-            if (err) {
-                return next(err);
-            }
+        User.remove({})
+        .then(() => {
+            User.register(new User({ username: 'admin' }), password, (err, user) => {
+                if (err) {
+                    return next(err);
+                }
 
-            return send200Success(res, `User with username ${user.username} and password ${password} created`);
-        });
+                return send200Success(res, `User with username ${user.username} and password ${password} created`);
+            });
+        })
+        .catch(next);
     });
 
     auth.get('/cleanup', (req, res, next) => {
         User.remove({})
         .then(send200Success(res, 'Cleanup done'))
+        .catch(next);
+    });
+
+    auth.get('/setup-homes', (req, res, next) => {
+        const finnkoder = [
+            75735376,
+            85354168,
+            85425584
+        ];
+
+        Home.remove({})
+        .then(() => Promise.all(finnkoder.map((finnkode, order) => new Home({
+            finnkode,
+            order
+        }).save())))
+        .then(() => send200Success(res, 'Some homes created'))
+        .catch(next);
+    });
+
+    auth.get('/setup-lettings', (req, res, next) => {
+        const finnkoder = [
+            84593955,
+            85423774,
+            74943932
+        ];
+
+        Letting.remove({})
+        .then(() => Promise.all(finnkoder.map((finnkode, order) => new Letting({
+            finnkode,
+            order
+        }).save())))
+        .then(() => send200Success(res, 'Some lettings created'))
         .catch(next);
     });
 }
