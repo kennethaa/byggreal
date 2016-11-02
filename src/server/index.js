@@ -21,20 +21,33 @@ app.use(morgan('dev'));
 app.use(passport.initialize());
 
 // Express middlewares in production
-// if (app.get('env') === 'production') {
+// if (process.env.NODE_ENV === 'production') {
 //
 // }
 
 // Express middlewares in development
-// if (app.get('env') === 'development') {
-    // if (webpackDevMiddleware) {
-    //     app.use(webpackDevMiddleware);
-    // }
-    //
-    // if (webpackHotMiddleware) {
-    //     app.use(webpackHotMiddleware);
-    // }
-// }
+if (process.env.NODE_ENV === 'development') {
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+    const webpackConfig = require('../config/dev.config');
+    const compiler = require('../config/compiler');
+
+    app.use(webpackDevMiddleware(compiler, {
+        hot: true,
+        historyApiFallback: true,
+        noInfo: false,
+        quiet: false,
+        lazy: false,
+        publicPath: webpackConfig.output.publicPath,
+        stats: {
+            colors: true
+        },
+        reporter: null,
+        serverSideRender: false
+    }));
+
+    app.use(webpackHotMiddleware(compiler));
+}
 
 // mongoose
 mongoose.Promise = global.Promise;
