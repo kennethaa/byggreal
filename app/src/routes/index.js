@@ -5,7 +5,7 @@ import {
     // Redirect
 } from 'react-router';
 
-import App from '../containers/App';
+import App from '../app/App';
 import Home from '../containers/Home';
 
 export default (

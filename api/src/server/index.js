@@ -26,28 +26,9 @@ app.use(passport.initialize());
 // }
 
 // Express middlewares in development
-if (process.env.NODE_ENV === 'development') {
-    const webpackDevMiddleware = require('webpack-dev-middleware');
-    const webpackHotMiddleware = require('webpack-hot-middleware');
-    const webpackConfig = require('../config/dev.config');
-    const compiler = require('../config/compiler');
-
-    app.use(webpackDevMiddleware(compiler, {
-        hot: true,
-        historyApiFallback: true,
-        noInfo: false,
-        quiet: false,
-        lazy: false,
-        publicPath: webpackConfig.output.publicPath,
-        stats: {
-            colors: true
-        },
-        reporter: null,
-        serverSideRender: false
-    }));
-
-    app.use(webpackHotMiddleware(compiler));
-}
+// if (process.env.NODE_ENV === 'development') {
+//
+// }
 
 // mongoose
 mongoose.Promise = global.Promise;

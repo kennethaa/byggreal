@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import 'whatwg-fetch';
+import 'isomorphic-fetch';
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
@@ -15,5 +15,5 @@ render(
     <MuiThemeProvider muiTheme={getMuiTheme(getTheme())}>
         <Router history={browserHistory} routes={routes} />
     </MuiThemeProvider>,
-    document.getElementById('byggreal')
+    document.getElementById('root')
 );

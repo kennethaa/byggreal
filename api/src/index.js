@@ -5,4 +5,4 @@ require('babel-core/register');
 require('isomorphic-fetch');
 
 // Start the server
-require('./src/server');
+require('./server');
