@@ -1,18 +1,20 @@
 import { Router } from 'express';
-import Home from '../../../../../models/Home';
-import { send200 } from '../../responses';
+import Home from '../../../../models/Home';
+import { send200 } from '../responses';
+import { auth } from '../middlewares';
 
 const homesRouter = new Router();
 
 homesRouter.route('/')
 .get((req, res, next) => {
+    console.log('gethomes');
     Home.find({})
     .then((homes) => send200(res, {
         homes
     }))
     .catch(next);
 })
-.post((req, res, next) => {
+.post(auth, (req, res, next) => {
     new Home(req.body).save()
     .then((home) =>
         send200(res, {
@@ -32,7 +34,7 @@ homesRouter.route('/:homeId')
     )
     .catch(next)
 )
-.put((req, res, next) => {
+.put(auth, (req, res, next) => {
     Home.findById(req.params.homeId)
     .then((home) =>
         Object.assign(home, req.body).save()
@@ -44,7 +46,7 @@ homesRouter.route('/:homeId')
     )
     .catch(next);
 })
-.delete((req, res, next) => {
+.delete(auth, (req, res, next) => {
     Home.remove({
         _id: req.params.homeId
     })

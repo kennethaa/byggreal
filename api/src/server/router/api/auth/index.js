@@ -55,7 +55,11 @@ if (process.env.NODE_ENV === 'development') {
         const finnkoder = [
             75735376,
             85354168,
-            85425584
+            85425584,
+            85556577,
+            85556313,
+            85555605,
+            85457532
         ];
 
         Home.remove({})
@@ -69,9 +73,12 @@ if (process.env.NODE_ENV === 'development') {
 
     auth.get('/setup-lettings', (req, res, next) => {
         const finnkoder = [
-            84593955,
-            85423774,
-            74943932
+            85557708,
+            85554361,
+            85552761,
+            85551968,
+            85544454,
+            85549462
         ];
 
         Letting.remove({})

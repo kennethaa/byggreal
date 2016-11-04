@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import Letting from '../../../../../models/Letting';
-import { send200 } from '../../responses';
+import Letting from '../../../../models/Letting';
+import { send200 } from '../responses';
+import { auth } from '../middlewares';
 
 const lettingsRouter = new Router();
 
@@ -12,7 +13,7 @@ lettingsRouter.route('/')
     }))
     .catch(next);
 })
-.post((req, res, next) => {
+.post(auth, (req, res, next) => {
     new Letting(req.body).save()
     .then((letting) =>
         send200(res, {
@@ -32,7 +33,7 @@ lettingsRouter.route('/:lettingId')
     )
     .catch(next)
 )
-.put((req, res, next) => {
+.put(auth, (req, res, next) => {
     Letting.findById(req.params.lettingId)
     .then((letting) =>
         Object.assign(letting, req.body).save()
@@ -44,7 +45,7 @@ lettingsRouter.route('/:lettingId')
     )
     .catch(next);
 })
-.delete((req, res, next) => {
+.delete(auth, (req, res, next) => {
     Letting.remove({
         _id: req.params.lettingId
     })

@@ -3,7 +3,9 @@ import auth from './auth';
 import admin from './admin';
 import finn from './finn';
 import { logError } from '../../../utils/logger';
-import { send500 } from './responses';
+import { send404, send500 } from './responses';
+import homes from './homes';
+import lettings from './lettings';
 
 const api = new Router();
 
@@ -18,7 +20,11 @@ api.use((req, res, next) => {
 
 api.use('/auth', auth);
 api.use('/admin', admin);
+api.use('/homes', homes);
+api.use('/lettings', lettings);
 api.use('/finn', finn);
+
+api.get('/*', (req, res) => send404(res));
 
 api.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     logError(err, req);

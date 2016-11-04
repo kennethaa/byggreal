@@ -1,8 +1,9 @@
-import { grey200, grey300 } from 'material-ui/styles/colors';
+import { fullWhite } from 'material-ui/styles/colors';
+import { fade } from 'material-ui/utils/colorManipulator';
 
-const primary1Color = '#3d2314';
-const primary2Color = '#f04e35';
-const primary3Color = '#ffcc00';
+const primary1Color = '#303030';
+const primary2Color = '#cad2d7';
+const primary3Color = '#4ec128';
 
 export default function getTheme() {
     return {
@@ -10,16 +11,15 @@ export default function getTheme() {
             primary1Color,
             primary2Color,
             primary3Color,
-            accent1Color: primary2Color
+            // accent1Color: primary2Color
         },
-        toggle: {
-            thumbOnColor: primary3Color,
-            thumbOffColor: primary1Color,
-            trackOnColor: grey300,
-            trackOffColor: grey300
-        },
-        card: {
-            activeBackgroundColor: grey200
+        bottomNavigation: {
+            backgroundColor: primary1Color,
+            unselectedColor: fade(fullWhite, 0.54),
+            selectedColor: fullWhite,
+            height: 56,
+            unselectedFontSize: 12,
+            selectedFontSize: 14
         }
     };
 }
