@@ -14,8 +14,6 @@ class FinnAd extends PureComponent {
             return null;
         }
 
-        console.log(finnAd);
-
         return (
             <a
                 href={finnAd.url}

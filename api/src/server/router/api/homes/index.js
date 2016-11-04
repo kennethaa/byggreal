@@ -7,7 +7,6 @@ const homesRouter = new Router();
 
 homesRouter.route('/')
 .get((req, res, next) => {
-    console.log('gethomes');
     Home.find({})
     .then((homes) => send200(res, {
         homes
