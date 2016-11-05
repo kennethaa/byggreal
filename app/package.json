@@ -22,6 +22,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "create:grid": "node-sass src/app/Grid.scss src/app/Grid.css --output-style expanded --indent-type space --indent-width 4",
-    "create:grid:watch": "npm run create:grid -- --watch"
+    "create:grid:watch": "npm run create:grid -- --watch",
+    "release": "npm run build && ./scripts/deploy.sh"
   }
 }
