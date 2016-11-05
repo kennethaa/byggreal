@@ -1,4 +1,4 @@
-const API_URL = process.env.API_URL || 'http://localhost:8080';
+const API_URL = process.env.API_URL || 'https://api.byggreal.kennethaasan.no';
 
 export default function api(feed) {
     return new Promise((resolve, reject) =>
