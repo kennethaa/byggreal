@@ -85,6 +85,7 @@ class Login extends Component {
                                 label="Logg inn"
                                 fullWidth
                                 type="submit"
+                                disabled={loading}
                             />
                         </div>
                         {loading && <Loading />}
