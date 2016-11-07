@@ -6,10 +6,14 @@ import {
 import Home from 'material-ui/svg-icons/action/home';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
 import Business from 'material-ui/svg-icons/communication/business';
+import Account from 'material-ui/svg-icons/action/account-box';
+import Person from 'material-ui/svg-icons/social/person';
+import PersonOutline from 'material-ui/svg-icons/social/person-outline';
 import withRoter from 'react-router/lib/withRouter';
 import logo from '../images/logo.jpg';
+import auth from '../utils/auth';
 
-const navItems = [
+const NAV_ITEMS = [
     {
         route: '/',
         name: 'Byggreal',
@@ -28,14 +32,51 @@ const navItems = [
 ];
 
 class Nav extends Component {
+    constructor(props, context) {
+        super(props, context);
+
+        this.updateAuth = this.updateAuth.bind(this);
+
+        this.state = {
+            loggedIn: auth.loggedIn()
+        };
+    }
+
+    componentWillMount() {
+        auth.onChange = this.updateAuth;
+    }
+
     onSelect(route) {
         const { router } = this.props;
 
         router.push(route);
     }
 
+    updateAuth(loggedIn) {
+        this.setState({
+            loggedIn: !!loggedIn
+        });
+    }
+
     render() {
+        const { loggedIn } = this.state;
         const { router: { isActive } } = this.props;
+
+        const navItems = [...NAV_ITEMS];
+
+        if (loggedIn) {
+            navItems.push({
+                route: '/admin',
+                name: 'Admin',
+                icon: Account
+            });
+        }
+
+        navItems.push({
+            route: loggedIn ? '/logout' : '/login',
+            name: loggedIn ? 'Logg ut' : 'Logg inn',
+            icon: loggedIn ? PersonOutline : Person
+        });
 
         const selectedIndex = navItems.findIndex((navItem, index) =>
             index !== 0 && isActive(navItem.route));
