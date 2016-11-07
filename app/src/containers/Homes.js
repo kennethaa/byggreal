@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
-import api from '../utils/api';
+import { getHomes } from '../utils/api';
 import FinnAd from '../components/FinnAd';
 
 class Homes extends Component {
@@ -16,32 +16,14 @@ class Homes extends Component {
     }
 
     componentDidMount() {
-        api('homes')
-        .then((homes) => {
-            if (homes.data.success === false) {
-                return this.setState({
-                    loading: false,
-                    error: homes.data.message
-                });
-            }
-
-            return Promise.all(homes.data.homes.map((home) =>
-                api(`finn/${home.finnkode}`)
-            ))
-            .then((finnAds) =>
-                this.setState({
-                    loading: false,
-                    error: false,
-                    finnAds
-                })
-            )
-            .catch((error) =>
-                this.setState({
-                    loading: false,
-                    error: (error && error.message) || error
-                })
-            );
-        })
+        getHomes()
+        .then((finnAds) =>
+            this.setState({
+                loading: false,
+                error: false,
+                finnAds
+            })
+        )
         .catch((error) =>
             this.setState({
                 loading: false,

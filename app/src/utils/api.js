@@ -14,3 +14,47 @@ export default function api(feed, required = true, options) {
         })
     );
 }
+
+export function getHomes() {
+    return new Promise((resolve, reject) => {
+        api('homes')
+        .then((homes) => {
+            if (homes.data.success === false) {
+                return reject(homes.data.message);
+            }
+
+            return Promise.all(homes.data.homes.map((home) =>
+                api(`finn/${home.finnkode}`, false)
+            ))
+            .then(resolve)
+            .catch((error) =>
+                reject((error && error.message) || error)
+            );
+        })
+        .catch((error) =>
+            reject((error && error.message) || error)
+        );
+    });
+}
+
+export function getLettings() {
+    return new Promise((resolve, reject) => {
+        api('lettings')
+        .then((lettings) => {
+            if (lettings.data.success === false) {
+                return reject(lettings.data.message);
+            }
+
+            return Promise.all(lettings.data.lettings.map((home) =>
+                api(`finn/${home.finnkode}`, false)
+            ))
+            .then(resolve)
+            .catch((error) =>
+                reject((error && error.message) || error)
+            );
+        })
+        .catch((error) =>
+            reject((error && error.message) || error)
+        );
+    });
+}

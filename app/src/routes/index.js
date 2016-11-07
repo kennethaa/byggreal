@@ -2,16 +2,17 @@ import React from 'react';
 import {
     Route,
     IndexRoute,
-    // Redirect
+    Redirect
 } from 'react-router';
 
 import App from '../app/App';
 import Main from '../containers/Main';
 import Homes from '../containers/Homes';
 import Lettings from '../containers/Lettings';
-
 import Login from '../containers/Login';
-import Admin from '../containers/Admin';
+
+import AdminHomes from '../containers/admin/AdminHomes';
+import AdminLettings from '../containers/admin/AdminLettings';
 
 import auth from '../utils/auth';
 
@@ -48,6 +49,8 @@ export default (
 
         <Route path="/login" component={Login} onEnter={redirectToAdminIfLoggedIn} />
         <Route path="/logout" onEnter={logout} />
-        <Route path="/admin" component={Admin} onEnter={redirectToLogin} />
+        <Redirect from="/admin" to="/admin/bolig-til-salgs" onEnter={redirectToLogin} />
+        <Route path="/admin/bolig-til-salgs" component={AdminHomes} onEnter={redirectToLogin} />
+        <Route path="/admin/bolig-til-leie" component={AdminLettings} onEnter={redirectToLogin} />
     </Route>
 );
