@@ -8,7 +8,7 @@ import {
 class FinnAd extends PureComponent {
     render() {
         const { style } = this.props;
-        const finnAd = this.props.finnAd && this.props.finnAd.data;
+        const finnAd = this.props.ad && this.props.ad.finnAd;
 
         if (!finnAd) {
             return null;
@@ -42,7 +42,7 @@ class FinnAd extends PureComponent {
 
 FinnAd.propTypes = {
     style: PropTypes.object,
-    finnAd: PropTypes.object.isRequired
+    ad: PropTypes.object.isRequired
 };
 
 export default FinnAd;

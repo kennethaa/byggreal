@@ -15,7 +15,6 @@ app.set('port', process.env.PORT || 8080);
 
 // Express middlewares
 app.use(compression());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(passport.initialize());

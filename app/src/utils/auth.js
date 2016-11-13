@@ -10,10 +10,10 @@ const auth = {
 
         api('auth/login', true, {
             method: 'post',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            body: `username=${username}&password=${password}`
+            body: JSON.stringify({
+                username,
+                password
+            })
         })
         .then((res) => {
             if (!res || !res.data || !res.data.token) {

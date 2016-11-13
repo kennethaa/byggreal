@@ -11,17 +11,17 @@ class Lettings extends Component {
         this.state = {
             loading: true,
             error: false,
-            finnAds: undefined
+            lettings: undefined
         };
     }
 
     componentDidMount() {
         getLettings()
-        .then((finnAds) =>
+        .then((lettings) =>
             this.setState({
                 loading: false,
                 error: false,
-                finnAds
+                lettings
             })
         )
         .catch((error) =>
@@ -33,23 +33,23 @@ class Lettings extends Component {
     }
 
     render() {
-        const { loading, error, finnAds } = this.state;
+        const { loading, error, lettings } = this.state;
 
         if (loading) {
             return <Loading />;
         }
 
-        if (error || !finnAds) {
+        if (error || !lettings) {
             return <ErrorMessage error={error} />;
         }
 
-        if (!finnAds.length) {
+        if (!lettings.length) {
             return <ErrorMessage error="Det finnes ingen boliger til leie for øyeblikket." />;
         }
 
         return (
             <div className="row">
-                {finnAds.map((finnAd, index) =>
+                {lettings.map((letting, index) =>
                     <div
                         key={index}
                         className="
@@ -59,7 +59,7 @@ class Lettings extends Component {
                     >
                         <div style={{ padding: '10px', height: 'calc(100% - 10px)' }}>
                             <FinnAd
-                                finnAd={finnAd}
+                                ad={letting}
                                 style={{
                                     height: 'calc(100% - 10px)'
                                 }}

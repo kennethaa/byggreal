@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import Home from '../../../models/Home';
-import { send200, send200Auth } from '../responses';
+import { send200Auth } from '../responses';
 import { auth } from '../middlewares';
 
 const homesRouter = new Router();
 
 homesRouter.route('/')
 .get((req, res, next) =>
-    Home.find({})
-    .then((homes) => send200(res, {
+    Home.find({}, null, { sort: { order: 'asc' } })
+    .then((homes) => send200Auth(res, {
         homes
     }))
     .catch(next)
@@ -27,7 +27,7 @@ homesRouter.route('/:homeId')
 .get((req, res, next) =>
     Home.findById(req.params.homeId)
     .then((home) =>
-        send200(res, {
+        send200Auth(res, {
             home
         })
     )

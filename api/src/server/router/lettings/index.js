@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Letting from '../../../models/Letting';
-import { send200, send200Auth } from '../responses';
+import { send200Auth } from '../responses';
 import { auth } from '../middlewares';
 
 const lettingsRouter = new Router();
@@ -8,7 +8,7 @@ const lettingsRouter = new Router();
 lettingsRouter.route('/')
 .get((req, res, next) =>
     Letting.find({})
-    .then((lettings) => send200(res, {
+    .then((lettings) => send200Auth(res, {
         lettings
     }))
     .catch(next)
@@ -27,7 +27,7 @@ lettingsRouter.route('/:lettingId')
 .get((req, res, next) =>
     Letting.findById(req.params.lettingId)
     .then((letting) =>
-        send200(res, {
+        send200Auth(res, {
             letting
         })
     )

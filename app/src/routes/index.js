@@ -49,8 +49,8 @@ export default (
 
         <Route path="/login" component={Login} onEnter={redirectToAdminIfLoggedIn} />
         <Route path="/logout" onEnter={logout} />
-        <Redirect from="/admin" to="/admin/bolig-til-salgs" />
-        <Route path="/admin/bolig-til-salgs" component={AdminHomes} onEnter={redirectToLogin} />
-        <Route path="/admin/bolig-til-leie" component={AdminLettings} onEnter={redirectToLogin} />
+        <Redirect from="/admin" to={AdminHomes.path} />
+        <Route path={`${AdminHomes.path}(/:homeId)`} component={AdminHomes} onEnter={redirectToLogin} />
+        <Route path={`${AdminLettings.path}(/:homeId)`} component={AdminLettings} onEnter={redirectToLogin} />
     </Route>
 );

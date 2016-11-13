@@ -12,4 +12,6 @@ class AdminLettings extends Component {
     }
 }
 
+AdminLettings.path = '/admin/bolig-til-leie';
+
 export default AdminLettings;
