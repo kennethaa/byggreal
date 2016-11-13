@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { send403, send200 } from '../responses';
-import getFinnAd from '../../../../finn';
+import getFinnAd from '../../../finn';
 
 const finn = new Router();
 

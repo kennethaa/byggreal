@@ -1,9 +1,15 @@
-import setAge from '../setAge';
+import setAge from './setAge';
 
 export function send200(res, data, age = 600) {
     if (age) {
         setAge(res, age);
     }
+    return res.json({
+        data
+    });
+}
+
+export function send200Auth(res, data) {
     return res.json({
         data
     });

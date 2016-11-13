@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
-import User from '../../../../models/User';
-import Home from '../../../../models/Home';
-import Letting from '../../../../models/Letting';
+import User from '../../../models/User';
+import Home from '../../../models/Home';
+import Letting from '../../../models/Letting';
 import { send200Success, send200Token, send401 } from '../responses';
 
 export const SECRET = process.env.SECRET || 'byggreal';
