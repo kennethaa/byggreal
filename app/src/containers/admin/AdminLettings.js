@@ -161,7 +161,7 @@ class AdminLettings extends Component {
                             }}
                         >
                             <Subheader>
-                                {'Bolig til salgs'}
+                                {'Bolig til leie'}
                                 <FloatingActionButton
                                     mini
                                     style={{ float: 'right', paddingRight: '8px', boxShadow: null }}
