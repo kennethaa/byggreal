@@ -140,10 +140,6 @@ class AdminLettings extends Component {
             return <ErrorMessage error={error} />;
         }
 
-        if (!lettings.length) {
-            return <ErrorMessage error="Det finnes ingen boliger til salgs for øyeblikket." />;
-        }
-
         const lettingActive = lettings.find((letting) => letting._id === params.lettingId);
         const lettingNew = params.lettingId === 'new';
 

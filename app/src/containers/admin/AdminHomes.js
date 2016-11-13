@@ -140,10 +140,6 @@ class AdminHomes extends Component {
             return <ErrorMessage error={error} />;
         }
 
-        if (!homes.length) {
-            return <ErrorMessage error="Det finnes ingen boliger til salgs for øyeblikket." />;
-        }
-
         const homeActive = homes.find((home) => home._id === params.homeId);
         const homeNew = params.homeId === 'new';
 
