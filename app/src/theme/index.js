@@ -19,7 +19,7 @@ export default function getTheme() {
             selectedColor: fullWhite,
             height: 56,
             unselectedFontSize: 12,
-            selectedFontSize: 14
+            selectedFontSize: 13
         }
     };
 }

@@ -94,6 +94,7 @@ class Nav extends Component {
                             <BottomNavigationItem
                                 key={navItem.route}
                                 label={navItem.name}
+                                className="no-wrap-all"
                                 icon={<navItem.icon />}
                                 onTouchTap={() => this.onSelect(navItem.route)}
                             />

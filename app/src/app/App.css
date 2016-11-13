@@ -38,6 +38,12 @@ body {
     text-overflow: ellipsis;
 }
 
+.no-wrap-all * {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .vertical-align-top {
     vertical-align: top !important;
 }
