@@ -50,7 +50,11 @@ export default (
         <Route path="/login" component={Login} onEnter={redirectToAdminIfLoggedIn} />
         <Route path="/logout" onEnter={logout} />
         <Redirect from="/admin" to={AdminHomes.path} />
-        <Route path={`${AdminHomes.path}(/:homeId)`} component={AdminHomes} onEnter={redirectToLogin} />
-        <Route path={`${AdminLettings.path}(/:homeId)`} component={AdminLettings} onEnter={redirectToLogin} />
+        <Route path={AdminHomes.path} component={AdminHomes} onEnter={redirectToLogin}>
+            <Route path=":homeId" />
+        </Route>
+        <Route path={AdminLettings.path} component={AdminLettings} onEnter={redirectToLogin}>
+            <Route path=":lettingId" />
+        </Route>
     </Route>
 );

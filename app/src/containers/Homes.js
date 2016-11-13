@@ -49,24 +49,30 @@ class Homes extends Component {
 
         return (
             <div className="row">
-                {homes.map((home, index) =>
-                    <div
-                        key={index}
-                        className="
+                {homes.map((home, index) => {
+                    if (!home || !home.finnAd || home.finnAd.success === false) {
+                        return null;
+                    }
+
+                    return (
+                        <div
+                            key={index}
+                            className="
                             col-xs-12
                             col-lg-4
-                        "
-                    >
-                        <div style={{ padding: '10px', height: 'calc(100% - 10px)' }}>
-                            <FinnAd
-                                ad={home}
-                                style={{
-                                    height: 'calc(100% - 10px)'
-                                }}
-                            />
+                            "
+                        >
+                            <div style={{ padding: '10px', height: 'calc(100% - 10px)' }}>
+                                <FinnAd
+                                    ad={home}
+                                    style={{
+                                        height: 'calc(100% - 10px)'
+                                    }}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
+                    );
+                })}
             </div>
         );
     }

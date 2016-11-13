@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Loading from '../Loading';
 
-class Home extends PureComponent {
+class Letting extends PureComponent {
     constructor(props, context) {
         super(props, context);
 
@@ -15,10 +15,10 @@ class Home extends PureComponent {
     onClickSave(event) {
         event.preventDefault();
 
-        const { home, onClickSave, homeNew, onClickCreateNew } = this.props;
+        const { letting, onClickSave, lettingNew, onClickCreateNew } = this.props;
         const order = this.order.input.value;
 
-        if (homeNew) {
+        if (lettingNew) {
             const finnkode = this.finnkode.input.value;
             return onClickCreateNew({
                 finnkode,
@@ -26,28 +26,28 @@ class Home extends PureComponent {
             });
         }
 
-        return onClickSave(home._id, {
+        return onClickSave(letting._id, {
             order
         });
     }
 
     onClickDelete() {
-        const { home, onClickDelete } = this.props;
+        const { letting, onClickDelete } = this.props;
 
-        if (confirm(`Er du sikker på at du vil slette finnkode ${home.finnkode}`)) { // eslint-disable-line no-alert
-            onClickDelete(home._id);
+        if (confirm(`Er du sikker på at du vil slette finnkode ${letting.finnkode}`)) { // eslint-disable-line no-alert
+            onClickDelete(letting._id);
         }
     }
 
     render() {
-        const { home, notFound, loading, homeNew } = this.props;
+        const { letting, notFound, loading, lettingNew } = this.props;
         const paddingLeft = '16px';
         const paddingRight = paddingLeft;
 
-        let title = 'Ny bolig';
+        let title = 'Ny utleiebolig';
 
-        if (home) {
-            title = 'Rediger bolig';
+        if (letting) {
+            title = 'Rediger utleiebolig';
         } else if (notFound) {
             title = 'Ikke funnet';
         }
@@ -70,14 +70,14 @@ class Home extends PureComponent {
                             <TextField
                                 fullWidth
                                 floatingLabelText="Finnkode"
-                                value={home && home.finnkode}
+                                value={letting && letting.finnkode}
                                 type="number"
                                 required
                                 min={1}
                                 ref={(finnkode) => {
                                     this.finnkode = finnkode;
                                 }}
-                                disabled={!homeNew}
+                                disabled={!lettingNew}
                             />
                         </div>
                     </div>
@@ -91,7 +91,7 @@ class Home extends PureComponent {
                             <TextField
                                 fullWidth
                                 floatingLabelText="Rekkefølge"
-                                defaultValue={home && home.order}
+                                defaultValue={letting && letting.order}
                                 type="number"
                                 min={1}
                                 ref={(order) => {
@@ -145,14 +145,14 @@ class Home extends PureComponent {
     }
 }
 
-Home.propTypes = {
-    home: PropTypes.object,
+Letting.propTypes = {
+    letting: PropTypes.object,
     notFound: PropTypes.bool,
     onClickSave: PropTypes.func.isRequired,
     onClickDelete: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    homeNew: PropTypes.bool.isRequired,
+    lettingNew: PropTypes.bool.isRequired,
     onClickCreateNew: PropTypes.func.isRequired
 };
 
-export default Home;
+export default Letting;

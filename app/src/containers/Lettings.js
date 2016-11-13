@@ -49,24 +49,30 @@ class Lettings extends Component {
 
         return (
             <div className="row">
-                {lettings.map((letting, index) =>
-                    <div
-                        key={index}
-                        className="
-                            col-xs-12
-                            col-lg-4
-                        "
-                    >
-                        <div style={{ padding: '10px', height: 'calc(100% - 10px)' }}>
-                            <FinnAd
-                                ad={letting}
-                                style={{
-                                    height: 'calc(100% - 10px)'
-                                }}
-                            />
+                {lettings.map((letting, index) => {
+                    if (!letting || !letting.finnAd || letting.finnAd.success === false) {
+                        return null;
+                    }
+
+                    return (
+                        <div
+                            key={index}
+                            className="
+                                col-xs-12
+                                col-lg-4
+                            "
+                        >
+                            <div style={{ padding: '10px', height: 'calc(100% - 10px)' }}>
+                                <FinnAd
+                                    ad={letting}
+                                    style={{
+                                        height: 'calc(100% - 10px)'
+                                    }}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
+                    );
+                })}
             </div>
         );
     }

@@ -10,10 +10,6 @@ class FinnAd extends PureComponent {
         const { style } = this.props;
         const finnAd = this.props.ad && this.props.ad.finnAd;
 
-        if (!finnAd) {
-            return null;
-        }
-
         return (
             <a
                 href={finnAd.url}

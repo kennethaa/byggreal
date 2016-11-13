@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import Subheader from 'material-ui/Subheader';
 import { List } from 'material-ui/List';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
-import { getHomes, putHome, deleteHome } from '../../utils/api';
+import { getHomes, putHome, deleteHome, postHome } from '../../utils/api';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
@@ -14,6 +16,8 @@ class AdminHomes extends Component {
         this.onClickAd = this.onClickAd.bind(this);
         this.onClickSave = this.onClickSave.bind(this);
         this.onClickDelete = this.onClickDelete.bind(this);
+        this.onClickCreateNew = this.onClickCreateNew.bind(this);
+        this.onClickNew = this.onClickNew.bind(this);
 
         this.state = {
             loading: true,
@@ -51,9 +55,18 @@ class AdminHomes extends Component {
     onClickDelete(homeId) {
         deleteHome(homeId)
         .then(() => {
-            const { router } = this.props;
+            this.getHomes()
+            .then(() => {
+                const { router } = this.props;
 
-            router.push(AdminHomes.path);
+                router.push(AdminHomes.path);
+            })
+            .catch((error) =>
+                this.setState({
+                    loading: false,
+                    error: (error && error.message) || error
+                })
+            );
         })
         .catch((error) =>
             this.setState({
@@ -63,8 +76,42 @@ class AdminHomes extends Component {
         );
     }
 
+    onClickCreateNew(home) {
+        this.setState({
+            loadingHomeActive: true
+        }, () => postHome(home)
+        .then(() =>
+            this.getHomes()
+            .then(() => {
+                const { router } = this.props;
+
+                router.push(AdminHomes.path);
+            })
+            .catch((error) =>
+                this.setState({
+                    loading: false,
+                    loadingHomeActive: false,
+                    error: (error && error.message) || error
+                })
+            )
+        )
+        .catch((error) =>
+            this.setState({
+                loading: false,
+                loadingHomeActive: false,
+                error: (error && error.message) || error
+            })
+        ));
+    }
+
+    onClickNew() {
+        const { router } = this.props;
+
+        router.push(`${AdminHomes.path}/new`);
+    }
+
     getHomes() {
-        getHomes()
+        return getHomes()
         .then((homes) =>
             this.setState({
                 loading: false,
@@ -98,6 +145,7 @@ class AdminHomes extends Component {
         }
 
         const homeActive = homes.find((home) => home._id === params.homeId);
+        const homeNew = params.homeId === 'new';
 
         let homesClassName = 'col-xs-12';
         let homeActiveClassName;
@@ -118,6 +166,16 @@ class AdminHomes extends Component {
                         >
                             <Subheader>
                                 {'Bolig til salgs'}
+                                <FloatingActionButton
+                                    mini
+                                    style={{ float: 'right', paddingRight: '8px', boxShadow: null }}
+                                    iconStyle={{ verticalAlign: 'middle' }}
+                                    title="Ny bolig"
+                                    onTouchTap={this.onClickNew}
+                                    disabled={homeNew}
+                                >
+                                    <ContentAdd />
+                                </FloatingActionButton>
                             </Subheader>
                             {homes.map((home, index) =>
                                 <AdminFinnAd
@@ -135,7 +193,9 @@ class AdminHomes extends Component {
                         <Home
                             key={params.homeId}
                             home={homeActive}
-                            notFound={params.homeId && !homeActive}
+                            homeNew={homeNew}
+                            onClickCreateNew={this.onClickCreateNew}
+                            notFound={!homeNew && params.homeId && !homeActive}
                             onClickSave={this.onClickSave}
                             onClickDelete={this.onClickDelete}
                             loading={loadingHomeActive}

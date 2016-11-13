@@ -7,7 +7,7 @@ const lettingsRouter = new Router();
 
 lettingsRouter.route('/')
 .get((req, res, next) =>
-    Letting.find({})
+    Letting.find({}, null, { sort: { order: 'asc' } })
     .then((lettings) => send200Auth(res, {
         lettings
     }))
