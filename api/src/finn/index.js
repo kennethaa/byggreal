@@ -3,7 +3,7 @@ import getFetchOptions from '../utils/getFetchOptions';
 
 export default function getFinnAd(id) {
     return new Promise((resolve, reject) => {
-        const url = `http://m.finn.no/${id}`;
+        const url = `https://m.finn.no/${id}`;
 
         fetch(url, getFetchOptions())
         .then((response) => {

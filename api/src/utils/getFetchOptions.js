@@ -1,6 +1,6 @@
-import http from 'http';
+import https from 'https';
 
-const agent = new http.Agent({
+const agent = new https.Agent({
     keepAlive: true
 });
 
