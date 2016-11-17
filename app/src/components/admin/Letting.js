@@ -70,7 +70,7 @@ class Letting extends PureComponent {
                             <TextField
                                 fullWidth
                                 floatingLabelText="Finnkode"
-                                value={letting && letting.finnkode}
+                                defaultValue={letting && letting.finnkode}
                                 type="number"
                                 required
                                 min={1}
@@ -127,7 +127,7 @@ class Letting extends PureComponent {
                                             label="Slett"
                                             secondary
                                             onTouchTap={this.onClickDelete}
-                                            disabled={loading}
+                                            disabled={loading || lettingNew}
                                         />
                                     </div>
                                 </div>

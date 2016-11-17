@@ -70,7 +70,7 @@ class Home extends PureComponent {
                             <TextField
                                 fullWidth
                                 floatingLabelText="Finnkode"
-                                value={home && home.finnkode}
+                                defaultValue={home && home.finnkode}
                                 type="number"
                                 required
                                 min={1}
@@ -127,7 +127,7 @@ class Home extends PureComponent {
                                             label="Slett"
                                             secondary
                                             onTouchTap={this.onClickDelete}
-                                            disabled={loading}
+                                            disabled={loading || homeNew}
                                         />
                                     </div>
                                 </div>
