@@ -1,41 +1,36 @@
 import React, { Component, PropTypes } from 'react';
+import muiThemeable from 'material-ui/styles/muiThemeable';
+import spacing from 'material-ui/styles/spacing';
+import 'mdi/css/materialdesignicons.css';
 import './App.css';
 import './Grid.css';
 import Nav from './Nav';
-import logo from '../images/logo.jpg';
+import Footer from './Footer';
 
 class App extends Component {
     render() {
-        const { children } = this.props;
+        const { children, muiTheme: { prepareStyles } } = this.props;
 
         return (
             <div className="container-fluid">
-                <div className="row">
-                    <div
-                        className="
-                            col-xs-12
-                            col-sm-6 push-sm-3
-                            col-md-6 push-md-3
-                            col-lg-4 push-lg-4
-                            text-center
-                        "
-                    >
-                        <img
-                            className="img-fluid"
-                            src={logo}
-                            alt="Byggreal Logo"
-                        />
-                    </div>
-                </div>
                 <Nav />
-                {children}
+                <div
+                    style={prepareStyles({
+                        paddingTop: spacing.desktopKeylineIncrement,
+                        minHeight: 500
+                    })}
+                >
+                    {children}
+                </div>
+                <Footer />
             </div>
         );
     }
 }
 
 App.propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    muiTheme: PropTypes.object.isRequired
 };
 
-export default App;
+export default muiThemeable()(App);

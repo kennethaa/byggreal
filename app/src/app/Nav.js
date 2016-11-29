@@ -1,113 +1,98 @@
-import React, { Component, PropTypes } from 'react';
-import {
-    BottomNavigation,
-    BottomNavigationItem
-} from 'material-ui/BottomNavigation';
-import Home from 'material-ui/svg-icons/action/home';
-import Homes from 'material-ui/svg-icons/action/shopping-cart';
-import Lettings from 'material-ui/svg-icons/communication/business';
-import Login from 'material-ui/svg-icons/social/person';
-import Logout from 'material-ui/svg-icons/social/person-outline';
+import React, { PureComponent, PropTypes } from 'react';
 import withRoter from 'react-router/lib/withRouter';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import muiThemeable from 'material-ui/styles/muiThemeable';
+import NavDrawer from './NavDrawer';
 import auth from '../utils/auth';
 
-class Nav extends Component {
+class Nav extends PureComponent {
     constructor(props, context) {
         super(props, context);
 
-        this.updateAuth = this.updateAuth.bind(this);
+        this._updateAuth = this._updateAuth.bind(this);
+        this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
+        this._onClickRoute = this._onClickRoute.bind(this);
 
         this.state = {
-            loggedIn: auth.loggedIn()
+            loggedIn: auth.loggedIn(),
+            open: false
         };
     }
 
     componentWillMount() {
-        auth.onChange = this.updateAuth;
+        auth.onChange = this._updateAuth;
     }
 
-    onSelect(route) {
+    _updateAuth(loggedIn) {
+        this.setState({
+            loggedIn
+        });
+    }
+
+    _onLeftIconButtonTouchTap() {
+        this.setState({
+            open: !this.state.open
+        });
+    }
+
+    _onClickRoute(event, route) {
         const { router } = this.props;
 
         router.push(route);
-    }
 
-    updateAuth(loggedIn) {
         this.setState({
-            loggedIn: !!loggedIn
+            open: false
         });
     }
 
     render() {
-        const { loggedIn } = this.state;
-        const { router: { isActive } } = this.props;
-
-        let navItems = [
-            {
-                route: '/',
-                name: 'Byggreal',
-                icon: Home
-            },
-            {
-                route: '/bolig-til-salgs',
-                name: 'Bolig til salgs',
-                icon: Homes
-            },
-            {
-                route: '/bolig-til-leie',
-                name: 'Bolig til leie',
-                icon: Lettings
-            }
-        ];
-
-        if (loggedIn) {
-            navItems = [
-                {
-                    route: '/admin/bolig-til-salgs',
-                    name: 'Bolig til salgs',
-                    icon: Homes
-                },
-                {
-                    route: '/admin/bolig-til-leie',
-                    name: 'Bolig til leie',
-                    icon: Lettings
-                }
-            ];
-        }
-
-        navItems.push({
-            route: loggedIn ? '/logout' : '/login',
-            name: loggedIn ? 'Logg ut' : 'Logg inn',
-            icon: loggedIn ? Logout : Login
-        });
-
-        const selectedIndex = navItems.findIndex((navItem, index) =>
-            index !== 0 && isActive(navItem.route));
+        const { loggedIn, open } = this.state;
+        const { muiTheme, location } = this.props;
 
         return (
             <div className="row">
                 <div className="col-xs-12">
-                    <BottomNavigation
-                        selectedIndex={selectedIndex < 0 ? 0 : selectedIndex}
-                    >
-                        {navItems.map((navItem) =>
-                            <BottomNavigationItem
-                                key={navItem.route}
-                                label={navItem.name}
-                                className="no-wrap-all"
-                                icon={<navItem.icon />}
-                                onTouchTap={() => this.onSelect(navItem.route)}
+                    <AppBar
+                        title="Byggreal"
+                        zDepth={0}
+                        onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
+                        iconElementLeft={
+                            <IconButton>
+                                <NavigationMenu />
+                            </IconButton>
+                        }
+                        iconElementRight={
+                            <IconButton
+                                iconClassName="mdi mdi-facebook"
+                                href="https://www.facebook.com/Byggreal-AS-167667106644338"
+                                target="_blank"
                             />
-                        )}
-                    </BottomNavigation>
+                        }
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            zIndex: muiTheme.zIndex.appBar + 1
+                        }}
+                    />
                 </div>
+                <NavDrawer
+                    loggedIn={loggedIn}
+                    open={open}
+                    onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
+                    location={location}
+                    onClickRoute={this._onClickRoute}
+                />
             </div>
         );
     }
 }
 
 Nav.propTypes = {
+    muiTheme: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired
 };
 
-export default withRoter(Nav);
+export default muiThemeable()(withRoter(Nav));

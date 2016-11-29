@@ -1,74 +1,99 @@
-import React, { Component, PropTypes } from 'react';
-import Gavel from 'material-ui/svg-icons/action/gavel';
-import Paintbrush from 'material-ui/svg-icons/editor/format-paint';
-import DashBoard from 'material-ui/svg-icons/action/dashboard';
-import info from '../images/info.jpg';
+import React, { PureComponent } from 'react';
+import { grey200, blueGrey500, red500, yellow500 } from 'material-ui/styles/colors';
+import typography from 'material-ui/styles/typography';
+import RaisedButton from 'material-ui/RaisedButton';
+import Feature from '../components/Feature';
+import header from '../images/header.jpg';
 
-class Main extends Component {
+class Main extends PureComponent {
     render() {
-        const { muiTheme } = this.context;
-
         return (
             <div>
-                <div
-                    className="row"
-                >
-                    <div
-                        className="col-xs-12 text-center"
-                    >
-                        <img src={info} alt="Byggreal" className="img-fluid" />
+                <div className="row">
+                    <div className="col-xs-12 text-center">
+                        <div
+                            style={{
+                                marginTop: 50,
+                                marginBottom: 50
+                            }}
+                        >
+                            <img
+                                className="img-fluid"
+                                src={header}
+                                alt="Byggreal"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div
                     className="row flex-items-xs-middle"
                     style={{
-                        background: muiTheme.bottomNavigation.backgroundColor,
-                        color: muiTheme.bottomNavigation.unselectedColor,
-                        padding: muiTheme.spacing.desktopGutter
+                        backgroundColor: grey200,
+                        minHeight: 250
                     }}
                 >
-                    <div className="col-xs-6 text-center">
-                        <Gavel style={{ color: muiTheme.bottomNavigation.unselectedColor, width: '50px', height: '50px' }} />
+                    <div className="col-xs-12 text-center">
+                        <h3
+                            style={{
+                                margin: '0px 20px',
+                                padding: 0,
+                                fontWeight: typography.fontWeightLight,
+                                fontSize: 22,
+                            }}
+                        >
+                            {'Skal du bygge hus eller restaurerer ditt gamle? Byggreal tar på seg et hvert byggeprosjekt. Kontakt oss for gunstige pristilbud!'}
+                        </h3>
                     </div>
-                    <div className="col-xs-6 text-center">
-                        <h2>Snekkeroppdrag</h2>
-                    </div>
+                </div>
+                <div className="row">
+                    <Feature
+                        title="Snekkeroppdrag"
+                        iconClassName="mdi mdi-screwdriver"
+                        backgroundColor={blueGrey500}
+                    />
+                    <Feature
+                        title="Maleroppdrag"
+                        iconClassName="mdi mdi-brush"
+                        backgroundColor={red500}
+                    />
+                    <Feature
+                        title="Mureroppdrag"
+                        iconClassName="mdi mdi-home"
+                        backgroundColor={yellow500}
+                    />
                 </div>
                 <div
                     className="row flex-items-xs-middle"
                     style={{
-                        padding: muiTheme.spacing.desktopGutter
+                        backgroundColor: grey200,
+                        minHeight: 250
                     }}
                 >
-                    <div className="col-xs-6 text-center">
-                        <Paintbrush style={{ width: '50px', height: '50px' }} />
-                    </div>
-                    <div className="col-xs-6 text-center">
-                        <h2>Maleroppdrag</h2>
-                    </div>
-                </div>
-                <div
-                    className="row flex-items-xs-middle"
-                    style={{
-                        background: muiTheme.bottomNavigation.backgroundColor,
-                        color: muiTheme.bottomNavigation.unselectedColor,
-                        padding: muiTheme.spacing.desktopGutter
-                    }}
-                >
-                    <div className="col-xs-6 text-center">
-                        <DashBoard style={{ color: muiTheme.bottomNavigation.unselectedColor, width: '50px', height: '50px' }} />
-                    </div>
-                    <div className="col-xs-6 text-center">
-                        <h2>Mureroppdrag</h2>
+                    <div className="col-xs-12 text-center">
+                        <h3
+                            style={{
+                                margin: 0,
+                                padding: 0,
+                                fontWeight: typography.fontWeightLight,
+                                fontSize: 22,
+                            }}
+                        >
+                            {'Sjekk ut Byggreal på mittanbud.no'}
+                        </h3>
+                        <RaisedButton
+                            label="MITTANBUD"
+                            primary
+                            href="https://mittanbud.no/profil/118912/byggreal-as"
+                            target="_blank"
+                            style={{
+                                marginTop: 50
+                            }}
+                        />
                     </div>
                 </div>
             </div>
         );
     }
 }
-
-Main.contextTypes = {
-    muiTheme: PropTypes.object.isRequired
-};
 
 export default Main;
