@@ -18,12 +18,14 @@ class AdminHomes extends Component {
         this.onClickDelete = this.onClickDelete.bind(this);
         this.onClickCreateNew = this.onClickCreateNew.bind(this);
         this.onClickNew = this.onClickNew.bind(this);
+        this.onRequestClose = this.onRequestClose.bind(this);
 
         this.state = {
             loading: true,
             loadingHomeActive: false,
             error: false,
-            homes: undefined
+            homes: undefined,
+            homeNew: false
         };
     }
 
@@ -40,34 +42,21 @@ class AdminHomes extends Component {
     onClickSave(homeId, home) {
         this.setState({
             loadingHomeActive: true
-        }, () => putHome(homeId, home)
-        .then(() =>
-            this.getHomes()
-        )
-        .catch((error) =>
-            this.setState({
-                loading: false,
-                error: (error && error.message) || error
-            })
-        ));
-    }
-
-    onClickDelete(homeId) {
-        deleteHome(homeId)
-        .then(() => {
-            this.getHomes()
-            .then(() => {
-                const { router } = this.props;
-
-                router.push(AdminHomes.path);
-            })
+        }, () =>
+            putHome(homeId, home)
+            .then(() => this.getHomes().then(() => this.props.router.push(AdminHomes.path)))
             .catch((error) =>
                 this.setState({
                     loading: false,
                     error: (error && error.message) || error
                 })
-            );
-        })
+            )
+        );
+    }
+
+    onClickDelete(homeId) {
+        deleteHome(homeId)
+        .then(() => this.getHomes().then(() => this.props.router.push(AdminHomes.path)))
         .catch((error) =>
             this.setState({
                 loading: false,
@@ -79,14 +68,9 @@ class AdminHomes extends Component {
     onClickCreateNew(home) {
         this.setState({
             loadingHomeActive: true
-        }, () => postHome(home)
-        .then(() =>
-            this.getHomes()
-            .then(() => {
-                const { router } = this.props;
-
-                router.push(AdminHomes.path);
-            })
+        }, () =>
+            postHome(home)
+            .then(() => this.getHomes().then(() => this.setState({ homeNew: false })))
             .catch((error) =>
                 this.setState({
                     loading: false,
@@ -94,20 +78,25 @@ class AdminHomes extends Component {
                     error: (error && error.message) || error
                 })
             )
-        )
-        .catch((error) =>
-            this.setState({
-                loading: false,
-                loadingHomeActive: false,
-                error: (error && error.message) || error
-            })
-        ));
+        );
     }
 
     onClickNew() {
-        const { router } = this.props;
+        this.setState({
+            homeNew: true
+        });
+    }
 
-        router.push(`${AdminHomes.path}/new`);
+    onRequestClose() {
+        const { params, router } = this.props;
+
+        if (params.homeId) {
+            return router.push(AdminHomes.path);
+        }
+
+        return this.setState({
+            homeNew: false
+        });
     }
 
     getHomes() {
@@ -129,7 +118,7 @@ class AdminHomes extends Component {
     }
 
     render() {
-        const { loading, error, homes, loadingHomeActive } = this.state;
+        const { loading, error, homes, loadingHomeActive, homeNew } = this.state;
         const { params } = this.props;
 
         if (loading) {
@@ -141,19 +130,10 @@ class AdminHomes extends Component {
         }
 
         const homeActive = homes.find((home) => home._id === params.homeId);
-        const homeNew = params.homeId === 'new';
-
-        let homesClassName = 'col-xs-12';
-        let homeActiveClassName;
-
-        if (params.homeId) {
-            homesClassName = 'col-xs-8';
-            homeActiveClassName = 'col-xs-4';
-        }
 
         return (
             <div className="row">
-                <div className={homesClassName}>
+                <div className="col-xs-12">
                     <div className="row">
                         <List
                             style={{
@@ -184,19 +164,19 @@ class AdminHomes extends Component {
                         </ List>
                     </div>
                 </div>
-                {params.homeId && (
-                    <div className={homeActiveClassName}>
-                        <Home
-                            key={params.homeId}
-                            home={homeActive}
-                            homeNew={homeNew}
-                            onClickCreateNew={this.onClickCreateNew}
-                            notFound={!homeNew && params.homeId && !homeActive}
-                            onClickSave={this.onClickSave}
-                            onClickDelete={this.onClickDelete}
-                            loading={loadingHomeActive}
-                        />
-                    </div>
+                {(params.homeId || homeNew) && (
+                    <Home
+                        key={params.homeId || 'new'}
+                        home={homeActive}
+                        homeNew={homeNew}
+                        onClickCreateNew={this.onClickCreateNew}
+                        notFound={!homeNew && params.homeId && !homeActive}
+                        onClickSave={this.onClickSave}
+                        onClickDelete={this.onClickDelete}
+                        loading={loadingHomeActive}
+                        onRequestClose={this.onRequestClose}
+                        name="bolig"
+                    />
                 )}
             </div>
         );

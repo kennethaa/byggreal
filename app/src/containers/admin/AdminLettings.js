@@ -7,7 +7,7 @@ import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
 import { getLettings, putLetting, deleteLetting, postLetting } from '../../utils/api';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
-import Letting from '../../components/admin/Letting';
+import Home from '../../components/admin/Home';
 
 class AdminLettings extends Component {
     constructor(props, context) {
@@ -18,12 +18,14 @@ class AdminLettings extends Component {
         this.onClickDelete = this.onClickDelete.bind(this);
         this.onClickCreateNew = this.onClickCreateNew.bind(this);
         this.onClickNew = this.onClickNew.bind(this);
+        this.onRequestClose = this.onRequestClose.bind(this);
 
         this.state = {
             loading: true,
             loadingLettingActive: false,
             error: false,
-            lettings: undefined
+            lettings: undefined,
+            lettingNew: false
         };
     }
 
@@ -40,34 +42,21 @@ class AdminLettings extends Component {
     onClickSave(lettingId, letting) {
         this.setState({
             loadingLettingActive: true
-        }, () => putLetting(lettingId, letting)
-        .then(() =>
-            this.getLettings()
-        )
-        .catch((error) =>
-            this.setState({
-                loading: false,
-                error: (error && error.message) || error
-            })
-        ));
-    }
-
-    onClickDelete(lettingId) {
-        deleteLetting(lettingId)
-        .then(() =>
-            this.getLettings()
-            .then(() => {
-                const { router } = this.props;
-
-                router.push(AdminLettings.path);
-            })
+        }, () =>
+            putLetting(lettingId, letting)
+            .then(() => this.getLettings().then(() => this.props.router.push(AdminLettings.path)))
             .catch((error) =>
                 this.setState({
                     loading: false,
                     error: (error && error.message) || error
                 })
             )
-        )
+        );
+    }
+
+    onClickDelete(lettingId) {
+        deleteLetting(lettingId)
+        .then(() => this.getLettings().then(() => this.props.router.push(AdminLettings.path)))
         .catch((error) =>
             this.setState({
                 loading: false,
@@ -79,35 +68,35 @@ class AdminLettings extends Component {
     onClickCreateNew(letting) {
         this.setState({
             loadingLettingActive: true
-        }, () => postLetting(letting)
-        .then(() => {
-            this.getLettings()
-            .then(() => {
-                const { router } = this.props;
-
-                router.push(AdminLettings.path);
-            })
+        }, () =>
+            postLetting(letting)
+            .then(() => this.getLettings().then(() => this.setState({ lettingNew: false })))
             .catch((error) =>
                 this.setState({
                     loading: false,
                     loadingLettingActive: false,
                     error: (error && error.message) || error
                 })
-            );
-        })
-        .catch((error) =>
-            this.setState({
-                loading: false,
-                loadingLettingActive: false,
-                error: (error && error.message) || error
-            })
-        ));
+            )
+        );
     }
 
     onClickNew() {
-        const { router } = this.props;
+        this.setState({
+            lettingNew: true
+        });
+    }
 
-        router.push(`${AdminLettings.path}/new`);
+    onRequestClose() {
+        const { params, router } = this.props;
+
+        if (params.lettingId) {
+            return router.push(AdminLettings.path);
+        }
+
+        return this.setState({
+            lettingNew: false
+        });
     }
 
     getLettings() {
@@ -129,7 +118,7 @@ class AdminLettings extends Component {
     }
 
     render() {
-        const { loading, error, lettings, loadingLettingActive } = this.state;
+        const { loading, error, lettings, loadingLettingActive, lettingNew } = this.state;
         const { params } = this.props;
 
         if (loading) {
@@ -141,19 +130,10 @@ class AdminLettings extends Component {
         }
 
         const lettingActive = lettings.find((letting) => letting._id === params.lettingId);
-        const lettingNew = params.lettingId === 'new';
-
-        let lettingsClassName = 'col-xs-12';
-        let lettingActiveClassName;
-
-        if (params.lettingId) {
-            lettingsClassName = 'col-xs-8';
-            lettingActiveClassName = 'col-xs-4';
-        }
 
         return (
             <div className="row">
-                <div className={lettingsClassName}>
+                <div className="col-xs-12">
                     <div className="row">
                         <List
                             style={{
@@ -184,19 +164,19 @@ class AdminLettings extends Component {
                         </ List>
                     </div>
                 </div>
-                {params.lettingId && (
-                    <div className={lettingActiveClassName}>
-                        <Letting
-                            key={params.lettingId}
-                            letting={lettingActive}
-                            lettingNew={lettingNew}
-                            onClickCreateNew={this.onClickCreateNew}
-                            notFound={!lettingNew && params.lettingId && !lettingActive}
-                            onClickSave={this.onClickSave}
-                            onClickDelete={this.onClickDelete}
-                            loading={loadingLettingActive}
-                        />
-                    </div>
+                {(params.lettingId || lettingNew) && (
+                    <Home
+                        key={params.lettingId || 'new'}
+                        home={lettingActive}
+                        homeNew={lettingNew}
+                        onClickCreateNew={this.onClickCreateNew}
+                        notFound={!lettingNew && params.lettingId && !lettingActive}
+                        onClickSave={this.onClickSave}
+                        onClickDelete={this.onClickDelete}
+                        loading={loadingLettingActive}
+                        onRequestClose={this.onRequestClose}
+                        name="utleiebolig"
+                    />
                 )}
             </div>
         );

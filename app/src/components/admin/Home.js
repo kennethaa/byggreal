@@ -1,8 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Subheader from 'material-ui/Subheader';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Loading from '../Loading';
 
 class Home extends PureComponent {
     constructor(props, context) {
@@ -40,26 +39,41 @@ class Home extends PureComponent {
     }
 
     render() {
-        const { home, notFound, loading, homeNew } = this.props;
+        const { home, notFound, loading, homeNew, onRequestClose, name } = this.props;
         const paddingLeft = '16px';
         const paddingRight = paddingLeft;
 
-        let title = 'Ny bolig';
+        let title = `Ny ${name}`;
 
         if (home) {
-            title = 'Rediger bolig';
+            title = `Rediger ${name}`;
         } else if (notFound) {
             title = 'Ikke funnet';
         }
 
         return (
-            <form onSubmit={this.onClickSave}>
+            <Dialog
+                title={title}
+                modal={false}
+                open
+                onRequestClose={onRequestClose}
+                actions={[
+                    <FlatButton
+                        label="Slett"
+                        secondary
+                        onTouchTap={this.onClickDelete}
+                        disabled={loading || homeNew}
+                    />,
+                    <FlatButton
+                        label="Lagre"
+                        primary
+                        onTouchTap={this.onClickSave}
+                        disabled={loading}
+                        keyboardFocused
+                    />
+                ]}
+            >
                 <div className="row">
-                    <div className="col-xs-12">
-                        <Subheader>
-                            {title}
-                        </Subheader>
-                    </div>
                     <div className="col-xs-12">
                         <div
                             style={{
@@ -101,46 +115,8 @@ class Home extends PureComponent {
                             />
                         </div>
                     </div>
-                    <div className="col-xs-12">
-                        <div
-                            style={{
-                                paddingLeft,
-                                paddingRight
-                            }}
-                        >
-                            <div className="row">
-                                <div className="col-xs-6">
-                                    <div style={{ paddingRight: '8px' }}>
-                                        <RaisedButton
-                                            fullWidth
-                                            label="Lagre"
-                                            primary
-                                            disabled={loading}
-                                            type="submit"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col-xs-6">
-                                    <div style={{ paddingLeft: '8px' }}>
-                                        <RaisedButton
-                                            fullWidth
-                                            label="Slett"
-                                            secondary
-                                            onTouchTap={this.onClickDelete}
-                                            disabled={loading || homeNew}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {loading && (
-                        <div className="col-xs-12">
-                            <Loading />
-                        </div>
-                    )}
                 </div>
-            </form>
+            </Dialog>
         );
     }
 }
@@ -152,7 +128,9 @@ Home.propTypes = {
     onClickDelete: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     homeNew: PropTypes.bool.isRequired,
-    onClickCreateNew: PropTypes.func.isRequired
+    onClickCreateNew: PropTypes.func.isRequired,
+    onRequestClose: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired
 };
 
 export default Home;
