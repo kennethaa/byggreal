@@ -23,8 +23,7 @@ class App extends Component {
                 <div
                     style={{
                         flex: 1,
-                        paddingTop: spacing.desktopKeylineIncrement,
-                        minHeight: 500
+                        paddingTop: spacing.desktopKeylineIncrement
                     }}
                 >
                     {children}
