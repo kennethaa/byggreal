@@ -14,6 +14,7 @@ class Nav extends PureComponent {
         this._updateAuth = this._updateAuth.bind(this);
         this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
         this._onClickRoute = this._onClickRoute.bind(this);
+        this._onTitleTouchTap = this._onTitleTouchTap.bind(this);
 
         this.state = {
             loggedIn: auth.loggedIn(),
@@ -47,6 +48,12 @@ class Nav extends PureComponent {
         });
     }
 
+    _onTitleTouchTap() {
+        const { router } = this.props;
+
+        router.push('/');
+    }
+
     render() {
         const { loggedIn, open } = this.state;
         const { muiTheme, location } = this.props;
@@ -58,6 +65,7 @@ class Nav extends PureComponent {
                         title="Byggreal"
                         zDepth={0}
                         onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
+                        onTitleTouchTap={this._onTitleTouchTap}
                         iconElementLeft={
                             <IconButton>
                                 <NavigationMenu />
