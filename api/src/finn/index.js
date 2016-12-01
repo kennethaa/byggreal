@@ -18,6 +18,8 @@ export default function getFinnAd(id) {
                 title: null,
                 description: null,
                 url: null,
+                sold: false,
+                leased: false,
                 image: null,
                 images: null
             };
@@ -54,6 +56,11 @@ export default function getFinnAd(id) {
                                 height: attributes.content
                             });
                         }
+                    }
+
+                    if (name === 'span' && attributes && attributes.class === 'objectstatus sold') {
+                        data.sold = true;
+                        data.leased = true;
                     }
 
                     if (name === 'img' && attributes && attributes.class === 'centered-image' && attributes['aria-label'] === 'Galleribilde') {
