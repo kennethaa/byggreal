@@ -8,6 +8,9 @@ export default function getTheme() {
             primary1Color,
             primary2Color,
             primary3Color
+        },
+        appBar: {
+            height: 80
         }
     };
 }

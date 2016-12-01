@@ -6,6 +6,7 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import NavDrawer from './NavDrawer';
 import auth from '../utils/auth';
+import byggrealDark from '../images/byggreal_dark.png';
 
 class Nav extends PureComponent {
     constructor(props, context) {
@@ -61,7 +62,13 @@ class Nav extends PureComponent {
         return (
             <div>
                 <AppBar
-                    title="Byggreal"
+                    title={
+                        <img
+                            src={byggrealDark}
+                            className="vertical-align-middle"
+                            alt="Byggreal"
+                        />
+                    }
                     zDepth={0}
                     onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
                     onTitleTouchTap={this._onTitleTouchTap}
