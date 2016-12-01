@@ -1,9 +1,12 @@
 import React, { PureComponent } from 'react';
-import { grey200, blueGrey500, red500, yellow500 } from 'material-ui/styles/colors';
+import { grey200 } from 'material-ui/styles/colors';
 import typography from 'material-ui/styles/typography';
 import RaisedButton from 'material-ui/RaisedButton';
 import Feature from '../components/Feature';
-import header from '../images/header.jpg';
+import main from '../images/main.jpg';
+import carpenter from '../images/carpenter.jpg';
+import building from '../images/building.jpg';
+import wall from '../images/wall.jpg';
 
 class Main extends PureComponent {
     render() {
@@ -11,16 +14,11 @@ class Main extends PureComponent {
             <div>
                 <div className="row">
                     <div className="col-xs-12 text-center">
-                        <div
-                            style={{
-                                marginTop: 50,
-                                marginBottom: 50
-                            }}
-                        >
+                        <div>
                             <img
                                 className="img-fluid"
-                                src={header}
-                                alt="Byggreal"
+                                src={main}
+                                role="presentation"
                             />
                         </div>
                     </div>
@@ -41,25 +39,22 @@ class Main extends PureComponent {
                                 fontSize: 22,
                             }}
                         >
-                            {'Skal du bygge hus eller restaurerer ditt gamle? Byggreal tar på seg et hvert byggeprosjekt. Kontakt oss for gunstige pristilbud!'}
+                            {'Skal du bygge hus eller restaurerere ditt gamle? Byggreal tar på seg et hvert byggeprosjekt. Kontakt oss for gunstige pristilbud!'}
                         </h3>
                     </div>
                 </div>
                 <div className="row">
                     <Feature
                         title="Snekkeroppdrag"
-                        iconClassName="mdi mdi-screwdriver"
-                        backgroundColor={blueGrey500}
+                        image={carpenter}
                     />
                     <Feature
                         title="Maleroppdrag"
-                        iconClassName="mdi mdi-brush"
-                        backgroundColor={red500}
+                        image={building}
                     />
                     <Feature
                         title="Mureroppdrag"
-                        iconClassName="mdi mdi-home"
-                        backgroundColor={yellow500}
+                        image={wall}
                     />
                 </div>
                 <div

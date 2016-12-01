@@ -59,32 +59,30 @@ class Nav extends PureComponent {
         const { muiTheme, location } = this.props;
 
         return (
-            <div className="row">
-                <div className="col-xs-12">
-                    <AppBar
-                        title="Byggreal"
-                        zDepth={0}
-                        onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
-                        onTitleTouchTap={this._onTitleTouchTap}
-                        iconElementLeft={
-                            <IconButton>
-                                <NavigationMenu />
-                            </IconButton>
-                        }
-                        iconElementRight={
-                            <IconButton
-                                iconClassName="mdi mdi-facebook"
-                                href="https://www.facebook.com/Byggreal-AS-167667106644338"
-                                target="_blank"
-                            />
-                        }
-                        style={{
-                            position: 'fixed',
-                            top: 0,
-                            zIndex: muiTheme.zIndex.appBar + 1
-                        }}
-                    />
-                </div>
+            <div>
+                <AppBar
+                    title="Byggreal"
+                    zDepth={0}
+                    onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
+                    onTitleTouchTap={this._onTitleTouchTap}
+                    iconElementLeft={
+                        <IconButton>
+                            <NavigationMenu />
+                        </IconButton>
+                    }
+                    iconElementRight={
+                        <IconButton
+                            iconClassName="mdi mdi-facebook"
+                            href="https://www.facebook.com/Byggreal-AS-167667106644338"
+                            target="_blank"
+                        />
+                    }
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        zIndex: muiTheme.zIndex.appBar + 1
+                    }}
+                />
                 <NavDrawer
                     loggedIn={loggedIn}
                     open={open}

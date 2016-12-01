@@ -32,7 +32,8 @@ class Feature extends PureComponent {
         const {
             title,
             iconClassName,
-            backgroundColor
+            backgroundColor,
+            image
         } = this.props;
 
         return (
@@ -54,16 +55,26 @@ class Feature extends PureComponent {
                             fontSize: 20,
                             paddingTop: 20,
                             paddingBottom: 20,
+                            margin: 0
                         }}
                     >
                         {title}
                     </h3>
-                    <span
-                        className={iconClassName}
-                        style={{
-                            fontSize: 100
-                        }}
-                    />
+                    {iconClassName && (
+                        <span
+                            className={iconClassName}
+                            style={{
+                                fontSize: 100
+                            }}
+                        />
+                    )}
+                    {image && (
+                        <img
+                            className="img-fluid"
+                            src={image}
+                            role="presentation"
+                        />
+                    )}
                 </Paper>
             </div>
         );
@@ -72,8 +83,9 @@ class Feature extends PureComponent {
 
 Feature.propTypes = {
     title: PropTypes.string.isRequired,
-    iconClassName: PropTypes.string.isRequired,
-    backgroundColor: PropTypes.string.isRequired
+    backgroundColor: PropTypes.string,
+    iconClassName: PropTypes.string,
+    image: PropTypes.string
 };
 
 export default Feature;
