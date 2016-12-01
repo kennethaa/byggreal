@@ -7,6 +7,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import NavDrawer from './NavDrawer';
 import auth from '../utils/auth';
 import byggrealDark from '../images/byggreal_dark.png';
+import byggrealDarkHD from '../images/byggreal_dark_hd.png';
 
 class Nav extends PureComponent {
     constructor(props, context) {
@@ -65,6 +66,13 @@ class Nav extends PureComponent {
                     title={
                         <img
                             src={byggrealDark}
+                            style={{
+                                width: 229,
+                                height: 60
+                            }}
+                            srcSet={
+                                `${byggrealDark} 1x, ${byggrealDarkHD} 1.5x`
+                            }
                             className="vertical-align-middle"
                             alt="Byggreal"
                         />
