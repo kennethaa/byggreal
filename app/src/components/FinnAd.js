@@ -1,14 +1,20 @@
 import React, { PureComponent, PropTypes } from 'react';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import {
     Card,
     CardMedia,
     CardTitle
 } from 'material-ui/Card';
+import Chip from 'material-ui/Chip';
 
 class FinnAd extends PureComponent {
     render() {
-        const { style } = this.props;
-        const finnAd = this.props.ad && this.props.ad.finnAd;
+        const { style, ad, warning, muiTheme } = this.props;
+        const finnAd = ad && ad.finnAd;
+
+        if (!finnAd) {
+            return null;
+        }
 
         return (
             <a
@@ -27,7 +33,18 @@ class FinnAd extends PureComponent {
                         />
                     </CardMedia>
                     <CardTitle
-                        title={finnAd.title}
+                        title={
+                            <div>
+                                {(finnAd.sold || finnAd.leased) && (
+                                    <Chip
+                                        style={{ marginBottom: muiTheme.spacing.desktopGutterMini }}
+                                    >
+                                        {warning}
+                                    </Chip>
+                                )}
+                                {finnAd.title}
+                            </div>
+                        }
                         subtitle={finnAd.description}
                     />
                 </Card>
@@ -38,7 +55,9 @@ class FinnAd extends PureComponent {
 
 FinnAd.propTypes = {
     style: PropTypes.object,
-    ad: PropTypes.object.isRequired
+    ad: PropTypes.object.isRequired,
+    warning: PropTypes.string.isRequired,
+    muiTheme: PropTypes.object.isRequired
 };
 
-export default FinnAd;
+export default muiThemeable()(FinnAd);

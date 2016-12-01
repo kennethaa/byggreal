@@ -68,6 +68,7 @@ class Homes extends Component {
                                     style={{
                                         height: 'calc(100% - 10px)'
                                     }}
+                                    warning="Solgt"
                                 />
                             </div>
                         </div>

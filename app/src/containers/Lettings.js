@@ -68,6 +68,7 @@ class Lettings extends Component {
                                     style={{
                                         height: 'calc(100% - 10px)'
                                     }}
+                                    warning="Utleid"
                                 />
                             </div>
                         </div>

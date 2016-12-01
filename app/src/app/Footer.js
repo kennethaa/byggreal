@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import { lightWhite, grey900, darkWhite } from 'material-ui/styles/colors';
 import typography from 'material-ui/styles/typography';
 
@@ -54,9 +54,5 @@ class Footer extends PureComponent {
         );
     }
 }
-
-Footer.propTypes = {
-    muiTheme: PropTypes.object.isRequired
-};
 
 export default Footer;
