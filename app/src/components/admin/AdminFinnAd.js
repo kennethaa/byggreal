@@ -30,7 +30,7 @@ class AdminFinnAd extends PureComponent {
 
         if (active) {
             style = {
-                backgroundColor: fade(muiTheme.baseTheme.palette.textColor, 0.1)
+                backgroundColor: fade(muiTheme.baseTheme.palette.textColor, 0.2)
             };
         }
 
