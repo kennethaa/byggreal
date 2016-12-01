@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import spacing from 'material-ui/styles/spacing';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import 'mdi/css/materialdesignicons.css';
 import './App.css';
 import './Grid.css';
@@ -8,7 +8,7 @@ import Footer from './Footer';
 
 class App extends Component {
     render() {
-        const { children } = this.props;
+        const { children, muiTheme } = this.props;
 
         return (
             <div
@@ -23,7 +23,7 @@ class App extends Component {
                 <div
                     style={{
                         flex: 1,
-                        paddingTop: spacing.desktopKeylineIncrement
+                        paddingTop: muiTheme.appBar.height
                     }}
                 >
                     {children}
@@ -36,6 +36,7 @@ class App extends Component {
 
 App.propTypes = {
     children: PropTypes.node,
+    muiTheme: PropTypes.object.isRequired
 };
 
-export default App;
+export default muiThemeable()(App);
