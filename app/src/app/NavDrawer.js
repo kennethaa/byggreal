@@ -74,7 +74,6 @@ class NavDrawer extends PureComponent {
                 docked={false}
             >
                 <AppBar
-                    title="Byggreal"
                     zDepth={0}
                     onLeftIconButtonTouchTap={onLeftIconButtonTouchTap}
                     iconElementLeft={
