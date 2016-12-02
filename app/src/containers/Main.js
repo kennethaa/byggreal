@@ -2,8 +2,12 @@ import React, { PureComponent } from 'react';
 import { grey200 } from 'material-ui/styles/colors';
 import typography from 'material-ui/styles/typography';
 import RaisedButton from 'material-ui/RaisedButton';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
 import Feature from '../components/Feature';
 import main from '../images/main.jpg';
+import livingroom from '../images/livingroom.jpg';
+import bathroom from '../images/bathroom.jpg';
 import carpenter from '../images/carpenter.jpg';
 import building from '../images/building.jpg';
 import wall from '../images/wall.jpg';
@@ -13,14 +17,16 @@ class Main extends PureComponent {
         return (
             <div>
                 <div className="row">
-                    <div className="col-xs-12 text-center">
-                        <div>
-                            <img
-                                className="img-fluid"
-                                src={main}
-                                role="presentation"
-                            />
-                        </div>
+                    <div className="col-xs-12">
+                        <Slider
+                            arrows={false}
+                            autoplay
+                            infinite
+                        >
+                            <img src={main} role="presentation" />
+                            <img src={livingroom} role="presentation" />
+                            <img src={bathroom} role="presentation" />
+                        </Slider>
                     </div>
                 </div>
                 <div
