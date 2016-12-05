@@ -17,7 +17,13 @@ class Main extends PureComponent {
         return (
             <div>
                 <div className="row">
-                    <div className="col-xs-12">
+                    <div
+                        className="col-xs-12"
+                        style={{
+                            minWidth: 0,
+                            minHeight: 0
+                        }}
+                    >
                         <Slider
                             arrows={false}
                             autoplay
