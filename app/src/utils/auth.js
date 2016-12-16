@@ -2,12 +2,6 @@ import api from './api';
 
 const auth = {
     login(username, password, callback) {
-        if (localStorage.token) {
-            if (callback) callback(true);
-            if (this.onChange) this.onChange(true);
-            return;
-        }
-
         api('auth/login', true, {
             method: 'post',
             body: JSON.stringify({
@@ -16,13 +10,15 @@ const auth = {
             })
         })
         .then((res) => {
-            if (!res || !res.data || !res.data.token) {
+            if (!res || !res.data || !res.data.token || !res.data.expires) {
                 if (callback) callback(false);
                 if (this.onChange) this.onChange(false);
                 return;
             }
 
             localStorage.token = res.data.token;
+            localStorage.expires = res.data.expires;
+
             if (callback) callback(true);
             if (this.onChange) this.onChange(true);
         })
@@ -43,7 +39,7 @@ const auth = {
     },
 
     loggedIn() {
-        return !!localStorage.token;
+        return this.getToken() && ((Date.now() + 86400000) < localStorage.expires);
     },
 
     onChange() {}
