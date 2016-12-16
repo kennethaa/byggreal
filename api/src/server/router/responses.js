@@ -24,12 +24,13 @@ export function send200Success(res, message = 'Success') {
     });
 }
 
-export function send200Token(res, token) {
+export function send200Token(res, token, expires) {
     return res.json({
         data: {
             success: true,
             message: 'Enjoy tour token',
-            token
+            token,
+            expires
         }
     });
 }

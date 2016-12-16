@@ -26,7 +26,10 @@ auth.post('/login', (req, res, next) => {
             expiresIn: '30d'
         });
 
-        return send200Token(res, token);
+        // Now + 30 days
+        const expires = Date.now() + 2592000000;
+
+        return send200Token(res, token, expires);
     })(req, res, next);
 });
 
