@@ -5,6 +5,7 @@ import User from '../../../models/User';
 import Home from '../../../models/Home';
 import Letting from '../../../models/Letting';
 import { send200Success, send200Token, send401 } from '../responses';
+import { auth as authMiddleware } from '../middlewares';
 
 export const SECRET = process.env.SECRET || 'byggreal';
 
@@ -20,13 +21,18 @@ auth.post('/login', (req, res, next) => {
             return send401(res);
         }
 
+        // 30 days: https://github.com/zeit/ms
         const token = jwt.sign({ username: user.username }, SECRET, {
-            expiresIn: '1d'
+            expiresIn: '30d'
         });
 
         return send200Token(res, token);
     })(req, res, next);
 });
+
+auth.post('/verify', (req, res) => authMiddleware(req, res, () => {
+    send200Success(res, 'Token is valid');
+}));
 
 if (process.env.NODE_ENV === 'development') {
     auth.get('/setup', (req, res, next) => {
