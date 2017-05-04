@@ -29,9 +29,9 @@ class Main extends PureComponent {
                             autoplay
                             infinite
                         >
-                            <img src={main} role="presentation" />
-                            <img src={livingroom} role="presentation" />
-                            <img src={bathroom} role="presentation" />
+                            <img src={main} alt="main" />
+                            <img src={livingroom} alt="livingroom" />
+                            <img src={bathroom} alt="bathroom" />
                         </Slider>
                     </div>
                 </div>

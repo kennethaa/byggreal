@@ -72,7 +72,7 @@ class Feature extends PureComponent {
                         <img
                             className="img-fluid"
                             src={image}
-                            role="presentation"
+                            alt="Feature"
                         />
                     )}
                 </Paper>
