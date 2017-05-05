@@ -5,80 +5,76 @@ import { getLettings } from '../utils/api';
 import FinnAd from '../components/FinnAd';
 
 class Lettings extends Component {
-    static path = '/bolig-til-leie';
+  static path = '/bolig-til-leie';
 
-    constructor(props, context) {
-        super(props, context);
+  constructor(props, context) {
+    super(props, context);
 
-        this.state = {
-            loading: true,
-            error: false,
-            lettings: undefined
-        };
+    this.state = {
+      loading: true,
+      error: false,
+      lettings: undefined,
+    };
+  }
+
+  componentDidMount() {
+    getLettings()
+      .then(lettings =>
+        this.setState({
+          loading: false,
+          error: false,
+          lettings,
+        })
+      )
+      .catch(error =>
+        this.setState({
+          loading: false,
+          error: (error && error.message) || error,
+        })
+      );
+  }
+
+  render() {
+    const { loading, error, lettings } = this.state;
+
+    if (loading) {
+      return <Loading />;
     }
 
-    componentDidMount() {
-        getLettings()
-        .then((lettings) =>
-            this.setState({
-                loading: false,
-                error: false,
-                lettings
-            })
-        )
-        .catch((error) =>
-            this.setState({
-                loading: false,
-                error: (error && error.message) || error
-            })
-        );
+    if (error || !lettings) {
+      return <ErrorMessage error={error} />;
     }
 
-    render() {
-        const { loading, error, lettings } = this.state;
+    if (!lettings.length) {
+      return (
+        <ErrorMessage error="Det finnes ingen boliger til leie for øyeblikket." />
+      );
+    }
 
-        if (loading) {
-            return <Loading />;
-        }
+    return (
+      <div className="row">
+        {lettings.map((letting, index) => {
+          if (!letting || !letting.finnAd || letting.finnAd.success === false) {
+            return null;
+          }
 
-        if (error || !lettings) {
-            return <ErrorMessage error={error} />;
-        }
-
-        if (!lettings.length) {
-            return <ErrorMessage error="Det finnes ingen boliger til leie for øyeblikket." />;
-        }
-
-        return (
-            <div className="row">
-                {lettings.map((letting, index) => {
-                    if (!letting || !letting.finnAd || letting.finnAd.success === false) {
-                        return null;
-                    }
-
-                    return (
-                        <div
-                            key={index}
-                            className="
-                                col-xs-12
-                                col-lg-4
-                            "
-                        >
-                            <div style={{ padding: '10px', height: 'calc(100% - 10px)' }}>
-                                <FinnAd
-                                    ad={letting}
-                                    style={{
-                                        height: 'calc(100% - 10px)'
-                                    }}
-                                    warning="Utleid"
-                                />
-                            </div>
-                        </div>
-                    );
-                })}
+          return (
+            <div key={index} className="col-xs-12 col-lg-4">
+              <div style={{ padding: '10px', height: 'calc(100% - 10px)' }}>
+                <FinnAd
+                  ad={letting}
+                  style={{
+                    height: 'calc(100% - 10px)',
+                  }}
+                  warning="Utleid"
+                />
+              </div>
             </div>
-        );
-    }
+          );
+        })}
+      </div>
+    );
+  }
 }
 
 export default Lettings;

@@ -3,11 +3,7 @@ import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import {
-    List,
-    ListItem,
-    makeSelectable
-} from 'material-ui/List';
+import { List, ListItem, makeSelectable } from 'material-ui/List';
 import Home from 'material-ui/svg-icons/action/home';
 import Homes from 'material-ui/svg-icons/action/shopping-cart';
 import Lettings from 'material-ui/svg-icons/communication/business';
@@ -19,118 +15,115 @@ import Divider from 'material-ui/Divider';
 const SelectableList = makeSelectable(List);
 
 class NavDrawer extends PureComponent {
-    render() {
-        const {
-            loggedIn,
-            open,
-            onLeftIconButtonTouchTap,
-            location,
-            onClickRoute
-        } = this.props;
+  render() {
+    const {
+      loggedIn,
+      open,
+      onLeftIconButtonTouchTap,
+      location,
+      onClickRoute,
+    } = this.props;
 
-        const navItems = [
-            {
-                route: '/',
-                name: 'Hjem',
-                icon: Home
-            },
-            {
-                route: '/bolig-til-salgs',
-                name: 'Bolig til salgs',
-                icon: Homes
-            },
-            {
-                route: '/bolig-til-leie',
-                name: 'Bolig til leie',
-                icon: Lettings
-            }
-        ];
+    const navItems = [
+      {
+        route: '/',
+        name: 'Hjem',
+        icon: Home,
+      },
+      {
+        route: '/bolig-til-salgs',
+        name: 'Bolig til salgs',
+        icon: Homes,
+      },
+      {
+        route: '/bolig-til-leie',
+        name: 'Bolig til leie',
+        icon: Lettings,
+      },
+    ];
 
-        const navItemsAdmin = [
-            {
-                route: loggedIn ? '/logout' : '/login',
-                name: loggedIn ? 'Logg ut' : 'Logg inn',
-                icon: loggedIn ? Logout : Login
-            }
-        ];
+    const navItemsAdmin = [
+      {
+        route: loggedIn ? '/logout' : '/login',
+        name: loggedIn ? 'Logg ut' : 'Logg inn',
+        icon: loggedIn ? Logout : Login,
+      },
+    ];
 
-        if (loggedIn) {
-            navItemsAdmin.push({
-                route: '/admin/bolig-til-salgs',
-                name: 'Bolig til salgs',
-                icon: Homes
-            });
+    if (loggedIn) {
+      navItemsAdmin.push({
+        route: '/admin/bolig-til-salgs',
+        name: 'Bolig til salgs',
+        icon: Homes,
+      });
 
-            navItemsAdmin.push({
-                route: '/admin/bolig-til-leie',
-                name: 'Bolig til leie',
-                icon: Lettings
-            });
-        }
-
-        return (
-            <Drawer
-                open={open}
-                docked={false}
-            >
-                <AppBar
-                    zDepth={0}
-                    onLeftIconButtonTouchTap={onLeftIconButtonTouchTap}
-                    iconElementLeft={
-                        <IconButton>
-                            <NavigationClose />
-                        </IconButton>
-                    }
-                />
-                <SelectableList
-                    value={location.pathname}
-                    onChange={onClickRoute}
-                    style={{
-                        paddingTop: 0,
-                        paddingBottom: 0
-                    }}
-                >
-                    {navItems.map((navItem) =>
-                        <ListItem
-                            key={navItem.route}
-                            primaryText={navItem.name}
-                            leftIcon={<navItem.icon />}
-                            value={navItem.route}
-                        />
-                    )}
-                </SelectableList>
-                <Divider />
-                <Subheader>
-                    {'Admin'}
-                </Subheader>
-                <SelectableList
-                    value={location.pathname}
-                    onChange={onClickRoute}
-                    style={{
-                        paddingTop: 0,
-                        paddingBottom: 0
-                    }}
-                >
-                    {navItemsAdmin.map((navItem) =>
-                        <ListItem
-                            key={navItem.route}
-                            primaryText={navItem.name}
-                            leftIcon={<navItem.icon />}
-                            value={navItem.route}
-                        />
-                    )}
-                </SelectableList>
-            </Drawer>
-        );
+      navItemsAdmin.push({
+        route: '/admin/bolig-til-leie',
+        name: 'Bolig til leie',
+        icon: Lettings,
+      });
     }
+
+    return (
+      <Drawer open={open} docked={false}>
+        <AppBar
+          zDepth={0}
+          onLeftIconButtonTouchTap={onLeftIconButtonTouchTap}
+          iconElementLeft={
+            <IconButton>
+              <NavigationClose />
+            </IconButton>
+          }
+        />
+        <SelectableList
+          value={location.pathname}
+          onChange={onClickRoute}
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+          }}
+        >
+          {navItems.map(navItem => (
+            <ListItem
+              key={navItem.route}
+              primaryText={navItem.name}
+              leftIcon={<navItem.icon />}
+              value={navItem.route}
+            />
+          ))}
+        </SelectableList>
+        <Divider />
+        <Subheader>
+          {'Admin'}
+        </Subheader>
+        <SelectableList
+          value={location.pathname}
+          onChange={onClickRoute}
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+          }}
+        >
+          {navItemsAdmin.map(navItem => (
+            <ListItem
+              key={navItem.route}
+              primaryText={navItem.name}
+              leftIcon={<navItem.icon />}
+              value={navItem.route}
+            />
+          ))}
+        </SelectableList>
+      </Drawer>
+    );
+  }
 }
 
 NavDrawer.propTypes = {
-    loggedIn: PropTypes.bool.isRequired,
-    open: PropTypes.bool.isRequired,
-    onLeftIconButtonTouchTap: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
-    onClickRoute: PropTypes.func.isRequired
+  loggedIn: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
+  onLeftIconButtonTouchTap: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  onClickRoute: PropTypes.func.isRequired,
 };
 
 export default NavDrawer;

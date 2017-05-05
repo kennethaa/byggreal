@@ -5,191 +5,221 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
-import { getLettings, putLetting, deleteLetting, postLetting } from '../../utils/api';
+import {
+  getLettings,
+  putLetting,
+  deleteLetting,
+  postLetting,
+} from '../../utils/api';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
 class AdminLettings extends Component {
-    static path = '/admin/bolig-til-leie';
+  static path = '/admin/bolig-til-leie';
 
-    constructor(props, context) {
-        super(props, context);
+  constructor(props, context) {
+    super(props, context);
 
-        this.onClickAd = this.onClickAd.bind(this);
-        this.onClickSave = this.onClickSave.bind(this);
-        this.onClickDelete = this.onClickDelete.bind(this);
-        this.onClickCreateNew = this.onClickCreateNew.bind(this);
-        this.onClickNew = this.onClickNew.bind(this);
-        this.onRequestClose = this.onRequestClose.bind(this);
+    this.onClickAd = this.onClickAd.bind(this);
+    this.onClickSave = this.onClickSave.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
+    this.onClickCreateNew = this.onClickCreateNew.bind(this);
+    this.onClickNew = this.onClickNew.bind(this);
+    this.onRequestClose = this.onRequestClose.bind(this);
 
-        this.state = {
-            loading: true,
-            loadingLettingActive: false,
-            error: false,
-            lettings: undefined,
-            lettingNew: false
-        };
-    }
+    this.state = {
+      loading: true,
+      loadingLettingActive: false,
+      error: false,
+      lettings: undefined,
+      lettingNew: false,
+    };
+  }
 
-    componentDidMount() {
-        this.getLettings();
-    }
+  componentDidMount() {
+    this.getLettings();
+  }
 
-    onClickAd(ad) {
-        const { history } = this.props;
+  onClickAd(ad) {
+    const { history } = this.props;
 
-        history.push(`${AdminLettings.path}/${ad._id}`);
-    }
+    history.push(`${AdminLettings.path}/${ad._id}`);
+  }
 
-    onClickSave(lettingId, letting) {
-        this.setState({
-            loadingLettingActive: true
-        }, () =>
-            putLetting(lettingId, letting)
-            .then(() => this.getLettings().then(() => this.props.history.push(AdminLettings.path)))
-            .catch((error) =>
-                this.setState({
-                    loading: false,
-                    error: (error && error.message) || error
-                })
+  onClickSave(lettingId, letting) {
+    this.setState(
+      {
+        loadingLettingActive: true,
+      },
+      () =>
+        putLetting(lettingId, letting)
+          .then(() =>
+            this.getLettings().then(() =>
+              this.props.history.push(AdminLettings.path)
             )
-        );
-    }
-
-    onClickDelete(lettingId) {
-        deleteLetting(lettingId)
-        .then(() => this.getLettings().then(() => this.props.history.push(AdminLettings.path)))
-        .catch((error) =>
+          )
+          .catch(error =>
             this.setState({
-                loading: false,
-                error: (error && error.message) || error
+              loading: false,
+              error: (error && error.message) || error,
             })
-        );
-    }
+          )
+    );
+  }
 
-    onClickCreateNew(letting) {
-        this.setState({
-            loadingLettingActive: true
-        }, () =>
-            postLetting(letting)
-            .then(() => this.getLettings().then(() => this.setState({ lettingNew: false })))
-            .catch((error) =>
-                this.setState({
-                    loading: false,
-                    loadingLettingActive: false,
-                    error: (error && error.message) || error
-                })
-            )
-        );
-    }
-
-    onClickNew() {
-        this.setState({
-            lettingNew: true
-        });
-    }
-
-    onRequestClose() {
-        const { match, history } = this.props;
-        const { params } = match;
-
-        if (params.lettingId) {
-            return history.push(AdminLettings.path);
-        }
-
-        return this.setState({
-            lettingNew: false
-        });
-    }
-
-    getLettings() {
-        return getLettings()
-        .then((lettings) =>
-            this.setState({
-                loading: false,
-                loadingLettingActive: false,
-                error: false,
-                lettings
-            })
+  onClickDelete(lettingId) {
+    deleteLetting(lettingId)
+      .then(() =>
+        this.getLettings().then(() =>
+          this.props.history.push(AdminLettings.path)
         )
-        .catch((error) =>
+      )
+      .catch(error =>
+        this.setState({
+          loading: false,
+          error: (error && error.message) || error,
+        })
+      );
+  }
+
+  onClickCreateNew(letting) {
+    this.setState(
+      {
+        loadingLettingActive: true,
+      },
+      () =>
+        postLetting(letting)
+          .then(() =>
+            this.getLettings().then(() => this.setState({ lettingNew: false }))
+          )
+          .catch(error =>
             this.setState({
-                loading: false,
-                error: (error && error.message) || error
+              loading: false,
+              loadingLettingActive: false,
+              error: (error && error.message) || error,
             })
-        );
+          )
+    );
+  }
+
+  onClickNew() {
+    this.setState({
+      lettingNew: true,
+    });
+  }
+
+  onRequestClose() {
+    const { match, history } = this.props;
+    const { params } = match;
+
+    if (params.lettingId) {
+      return history.push(AdminLettings.path);
     }
 
-    render() {
-        const { loading, error, lettings, loadingLettingActive, lettingNew } = this.state;
-        const { match } = this.props;
-        const { params } = match;
+    return this.setState({
+      lettingNew: false,
+    });
+  }
 
-        if (loading) {
-            return <Loading />;
-        }
+  getLettings() {
+    return getLettings()
+      .then(lettings =>
+        this.setState({
+          loading: false,
+          loadingLettingActive: false,
+          error: false,
+          lettings,
+        })
+      )
+      .catch(error =>
+        this.setState({
+          loading: false,
+          error: (error && error.message) || error,
+        })
+      );
+  }
 
-        if (error || !lettings) {
-            return <ErrorMessage error={error} />;
-        }
+  render() {
+    const {
+      loading,
+      error,
+      lettings,
+      loadingLettingActive,
+      lettingNew,
+    } = this.state;
+    const { match } = this.props;
+    const { params } = match;
 
-        const lettingActive = lettings.find((letting) => letting._id === params.lettingId);
-
-        return (
-            <div className="row">
-                <div className="col-xs-12">
-                    <div className="row">
-                        <List
-                            style={{
-                                width: '100%'
-                            }}
-                        >
-                            <Subheader>
-                                {'Bolig til leie'}
-                                <FloatingActionButton
-                                    mini
-                                    style={{ float: 'right', paddingRight: '8px', boxShadow: null }}
-                                    iconStyle={{ verticalAlign: 'middle' }}
-                                    title="Ny bolig"
-                                    onTouchTap={this.onClickNew}
-                                    disabled={lettingNew}
-                                >
-                                    <ContentAdd />
-                                </FloatingActionButton>
-                            </Subheader>
-                            {lettings.map((letting, index) =>
-                                <AdminFinnAd
-                                    key={index}
-                                    ad={letting}
-                                    active={letting._id === params.lettingId}
-                                    onClickAd={this.onClickAd}
-                                />
-                            )}
-                        </ List>
-                    </div>
-                </div>
-                {(params.lettingId || lettingNew) && (
-                    <Home
-                        key={params.lettingId || 'new'}
-                        home={lettingActive}
-                        homeNew={lettingNew}
-                        onClickCreateNew={this.onClickCreateNew}
-                        notFound={!lettingNew && params.lettingId && !lettingActive}
-                        onClickSave={this.onClickSave}
-                        onClickDelete={this.onClickDelete}
-                        loading={loadingLettingActive}
-                        onRequestClose={this.onRequestClose}
-                        name="utleiebolig"
-                    />
-                )}
-            </div>
-        );
+    if (loading) {
+      return <Loading />;
     }
+
+    if (error || !lettings) {
+      return <ErrorMessage error={error} />;
+    }
+
+    const lettingActive = lettings.find(
+      letting => letting._id === params.lettingId
+    );
+
+    return (
+      <div className="row">
+        <div className="col-xs-12">
+          <div className="row">
+            <List
+              style={{
+                width: '100%',
+              }}
+            >
+              <Subheader>
+                {'Bolig til leie'}
+                <FloatingActionButton
+                  mini
+                  style={{
+                    float: 'right',
+                    paddingRight: '8px',
+                    boxShadow: null,
+                  }}
+                  iconStyle={{ verticalAlign: 'middle' }}
+                  title="Ny bolig"
+                  onTouchTap={this.onClickNew}
+                  disabled={lettingNew}
+                >
+                  <ContentAdd />
+                </FloatingActionButton>
+              </Subheader>
+              {lettings.map((letting, index) => (
+                <AdminFinnAd
+                  key={index}
+                  ad={letting}
+                  active={letting._id === params.lettingId}
+                  onClickAd={this.onClickAd}
+                />
+              ))}
+            </List>
+          </div>
+        </div>
+        {(params.lettingId || lettingNew) &&
+          <Home
+            key={params.lettingId || 'new'}
+            home={lettingActive}
+            homeNew={lettingNew}
+            onClickCreateNew={this.onClickCreateNew}
+            notFound={!lettingNew && params.lettingId && !lettingActive}
+            onClickSave={this.onClickSave}
+            onClickDelete={this.onClickDelete}
+            loading={loadingLettingActive}
+            onRequestClose={this.onRequestClose}
+            name="utleiebolig"
+          />}
+      </div>
+    );
+  }
 }
 
 AdminLettings.propTypes = {
-    history: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default AdminLettings;
