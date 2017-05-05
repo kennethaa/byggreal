@@ -2,6 +2,7 @@
 
 ## .env
 Make sure to create a .env file and fill in these details:
+
 `
 REACT_APP_FIREBASE_API_KEY=<REACT_APP_FIREBASE_API_KEY>
 REACT_APP_FIREBASE_AUTH_DOMAIN=<REACT_APP_FIREBASE_AUTH_DOMAIN>
