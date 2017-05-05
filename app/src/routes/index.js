@@ -15,6 +15,7 @@ import AdminHomes from '../containers/admin/AdminHomes';
 import AdminLettings from '../containers/admin/AdminLettings';
 
 import auth from '../utils/auth';
+import '../utils/firebase';
 
 function redirectToLogin(nextState, replace) {
     if (!auth.loggedIn()) {

@@ -4,10 +4,12 @@
   "private": true,
   "devDependencies": {
     "bootstrap": "4.0.0-alpha.5",
+    "flow-bin": "^0.45.0",
     "node-sass": "^4.5.2",
     "react-scripts": "^0.9.5"
   },
   "dependencies": {
+    "firebase": "^3.9.0",
     "material-ui": "^0.16.4",
     "mdi": "^1.9.33",
     "react": "^15.5.4",
@@ -22,6 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "flow": "flow",
     "create:grid": "node-sass src/app/Grid.scss src/app/Grid.css --output-style expanded --indent-type space --indent-width 4",
     "create:grid:watch": "npm run create:grid -- --watch",
     "release": "npm run build && ./scripts/deploy.sh"
