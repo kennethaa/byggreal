@@ -1,11 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
-import withRoter from 'react-router/lib/withRouter';
+import { withRouter } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import NavDrawer from './NavDrawer';
-import auth from '../utils/auth';
+import { onAuthStateChanged } from '../utils/auth';
 import byggrealDark from '../images/byggreal_dark.png';
 import byggrealDarkHD from '../images/byggreal_dark_hd.png';
 
@@ -13,24 +13,21 @@ class Nav extends PureComponent {
     constructor(props, context) {
         super(props, context);
 
-        this._updateAuth = this._updateAuth.bind(this);
         this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
         this._onClickRoute = this._onClickRoute.bind(this);
         this._onTitleTouchTap = this._onTitleTouchTap.bind(this);
 
         this.state = {
-            loggedIn: auth.loggedIn(),
+            user: null,
             open: false
         };
     }
 
     componentWillMount() {
-        auth.onChange = this._updateAuth;
-    }
-
-    _updateAuth(loggedIn) {
-        this.setState({
-            loggedIn
+        onAuthStateChanged((user) => {
+            this.setState({
+                user
+            });
         });
     }
 
@@ -41,9 +38,9 @@ class Nav extends PureComponent {
     }
 
     _onClickRoute(event, route) {
-        const { router } = this.props;
+        const { history } = this.props;
 
-        router.push(route);
+        history.push(route);
 
         this.setState({
             open: false
@@ -51,13 +48,13 @@ class Nav extends PureComponent {
     }
 
     _onTitleTouchTap() {
-        const { router } = this.props;
+        const { history } = this.props;
 
-        router.push('/');
+        history.push('/');
     }
 
     render() {
-        const { loggedIn, open } = this.state;
+        const { user, open } = this.state;
         const { muiTheme, location } = this.props;
 
         return (
@@ -99,7 +96,7 @@ class Nav extends PureComponent {
                     }}
                 />
                 <NavDrawer
-                    loggedIn={loggedIn}
+                    loggedIn={!!user}
                     open={open}
                     onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
                     location={location}
@@ -113,7 +110,7 @@ class Nav extends PureComponent {
 Nav.propTypes = {
     muiTheme: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired
 };
 
-export default muiThemeable()(withRoter(Nav));
+export default muiThemeable()(withRouter(Nav));

@@ -13,6 +13,8 @@ import building from '../images/building.jpg';
 import wall from '../images/wall.jpg';
 
 class Main extends PureComponent {
+    static path = '/';
+
     render() {
         return (
             <div>

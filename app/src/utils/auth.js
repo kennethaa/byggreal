@@ -1,48 +1,35 @@
-import api from './api';
+// @flow
 
-const auth = {
-    login(username, password, callback) {
-        api('auth/login', true, {
-            method: 'post',
-            body: JSON.stringify({
-                username,
-                password
-            })
-        })
-        .then((res) => {
-            if (!res || !res.data || !res.data.token || !res.data.expires) {
-                if (callback) callback(false);
-                if (this.onChange) this.onChange(false);
-                return;
-            }
+import firebase from 'firebase';
 
-            localStorage.token = res.data.token;
-            localStorage.expires = res.data.expires;
-
-            if (callback) callback(true);
-            if (this.onChange) this.onChange(true);
-        })
-        .catch(() => {
-            if (callback) callback(false);
-            if (this.onChange) this.onChange(false);
-        });
-    },
-
-    getToken() {
-        return localStorage.token;
-    },
-
-    logout(callback) {
-        delete localStorage.token;
-        if (callback) callback();
-        if (this.onChange) this.onChange(false);
-    },
-
-    loggedIn() {
-        return this.getToken() && ((Date.now() + 86400000) < localStorage.expires);
-    },
-
-    onChange() {}
+const config = {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID
 };
 
-export default auth;
+firebase.initializeApp(config);
+
+export function login(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+}
+
+export function logout() {
+    return firebase.auth().signOut();
+}
+
+export function getCurrentUser() {
+    return firebase.auth().currentUser;
+}
+
+type User = {
+    email: string,
+    uid: string
+};
+
+export function onAuthStateChanged(callback: (user: User | null) => void) {
+    return firebase.auth().onAuthStateChanged(callback);
+}

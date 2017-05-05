@@ -10,6 +10,8 @@ import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
 class AdminHomes extends Component {
+    static path = '/admin/bolig-til-salgs';
+
     constructor(props, context) {
         super(props, context);
 
@@ -34,9 +36,9 @@ class AdminHomes extends Component {
     }
 
     onClickAd(ad) {
-        const { router } = this.props;
+        const { history } = this.props;
 
-        router.push(`${AdminHomes.path}/${ad._id}`);
+        history.push(`${AdminHomes.path}/${ad._id}`);
     }
 
     onClickSave(homeId, home) {
@@ -44,7 +46,7 @@ class AdminHomes extends Component {
             loadingHomeActive: true
         }, () =>
             putHome(homeId, home)
-            .then(() => this.getHomes().then(() => this.props.router.push(AdminHomes.path)))
+            .then(() => this.getHomes().then(() => this.props.history.push(AdminHomes.path)))
             .catch((error) =>
                 this.setState({
                     loading: false,
@@ -56,7 +58,7 @@ class AdminHomes extends Component {
 
     onClickDelete(homeId) {
         deleteHome(homeId)
-        .then(() => this.getHomes().then(() => this.props.router.push(AdminHomes.path)))
+        .then(() => this.getHomes().then(() => this.props.history.push(AdminHomes.path)))
         .catch((error) =>
             this.setState({
                 loading: false,
@@ -88,10 +90,11 @@ class AdminHomes extends Component {
     }
 
     onRequestClose() {
-        const { params, router } = this.props;
+        const { match, history } = this.props;
+        const { params } = match;
 
         if (params.homeId) {
-            return router.push(AdminHomes.path);
+            return history.push(AdminHomes.path);
         }
 
         return this.setState({
@@ -119,7 +122,8 @@ class AdminHomes extends Component {
 
     render() {
         const { loading, error, homes, loadingHomeActive, homeNew } = this.state;
-        const { params } = this.props;
+        const { match } = this.props;
+        const { params } = match;
 
         if (loading) {
             return <Loading />;
@@ -183,11 +187,9 @@ class AdminHomes extends Component {
     }
 }
 
-AdminHomes.path = '/admin/bolig-til-salgs';
-
 AdminHomes.propTypes = {
-    router: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired
 };
 
 export default AdminHomes;

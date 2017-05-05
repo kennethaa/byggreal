@@ -10,6 +10,8 @@ import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
 class AdminLettings extends Component {
+    static path = '/admin/bolig-til-leie';
+
     constructor(props, context) {
         super(props, context);
 
@@ -34,9 +36,9 @@ class AdminLettings extends Component {
     }
 
     onClickAd(ad) {
-        const { router } = this.props;
+        const { history } = this.props;
 
-        router.push(`${AdminLettings.path}/${ad._id}`);
+        history.push(`${AdminLettings.path}/${ad._id}`);
     }
 
     onClickSave(lettingId, letting) {
@@ -44,7 +46,7 @@ class AdminLettings extends Component {
             loadingLettingActive: true
         }, () =>
             putLetting(lettingId, letting)
-            .then(() => this.getLettings().then(() => this.props.router.push(AdminLettings.path)))
+            .then(() => this.getLettings().then(() => this.props.history.push(AdminLettings.path)))
             .catch((error) =>
                 this.setState({
                     loading: false,
@@ -56,7 +58,7 @@ class AdminLettings extends Component {
 
     onClickDelete(lettingId) {
         deleteLetting(lettingId)
-        .then(() => this.getLettings().then(() => this.props.router.push(AdminLettings.path)))
+        .then(() => this.getLettings().then(() => this.props.history.push(AdminLettings.path)))
         .catch((error) =>
             this.setState({
                 loading: false,
@@ -88,10 +90,11 @@ class AdminLettings extends Component {
     }
 
     onRequestClose() {
-        const { params, router } = this.props;
+        const { match, history } = this.props;
+        const { params } = match;
 
         if (params.lettingId) {
-            return router.push(AdminLettings.path);
+            return history.push(AdminLettings.path);
         }
 
         return this.setState({
@@ -119,7 +122,8 @@ class AdminLettings extends Component {
 
     render() {
         const { loading, error, lettings, loadingLettingActive, lettingNew } = this.state;
-        const { params } = this.props;
+        const { match } = this.props;
+        const { params } = match;
 
         if (loading) {
             return <Loading />;
@@ -183,11 +187,9 @@ class AdminLettings extends Component {
     }
 }
 
-AdminLettings.path = '/admin/bolig-til-leie';
-
 AdminLettings.propTypes = {
-    router: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired
 };
 
 export default AdminLettings;

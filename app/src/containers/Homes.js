@@ -5,6 +5,8 @@ import { getHomes } from '../utils/api';
 import FinnAd from '../components/FinnAd';
 
 class Homes extends Component {
+    static path = '/bolig-til-salgs';
+
     constructor(props, context) {
         super(props, context);
 
