@@ -50,8 +50,8 @@ class Login extends Component<void, Props, State> {
         const { location, history } = this.props;
 
         login(email, password)
-          .then(user => {
-            onAuthStateChanged(user => {
+          .then(() => {
+            onAuthStateChanged(() => {
               if (location.state && location.state.from) {
                 return history.replace(location.state.from);
               }
@@ -76,10 +76,7 @@ class Login extends Component<void, Props, State> {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="row">
-          <div className="
-                            col-xs-10 push-xs-1
-                            col-md-6 push-md-3
-                        ">
+          <div className="col-xs-10 push-xs-1 col-md-6 push-md-3">
             <div className="col-xs-12">
               <TextField
                 id="email"
