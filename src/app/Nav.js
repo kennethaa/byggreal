@@ -49,7 +49,7 @@ class Nav extends PureComponent<void, Props, State> {
     });
   };
 
-  _onClickRoute = (event: Event, route: string) => {
+  _onClickRoute = (event, route) => {
     const { history } = this.props;
 
     history.push(route);

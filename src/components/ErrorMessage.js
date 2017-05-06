@@ -1,6 +1,16 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
 
-class ErrorMessage extends PureComponent {
+import React, { PureComponent } from 'react';
+
+type Props = {
+  error: string,
+};
+
+class ErrorMessage extends PureComponent<Props, Props, void> {
+  static defaultProps = {
+    error: 'Something bad happened',
+  };
+
   render() {
     return (
       <div className="row">
@@ -11,13 +21,5 @@ class ErrorMessage extends PureComponent {
     );
   }
 }
-
-ErrorMessage.defaultProps = {
-  error: 'Something bad happened',
-};
-
-ErrorMessage.propTypes = {
-  error: PropTypes.string,
-};
 
 export default ErrorMessage;

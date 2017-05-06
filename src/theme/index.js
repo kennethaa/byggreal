@@ -1,3 +1,5 @@
+// @flow
+
 import { grey900 } from 'material-ui/styles/colors';
 
 const primary1Color = grey900;

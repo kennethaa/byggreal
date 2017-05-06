@@ -1,3 +1,5 @@
+// @flow
+
 import './utils/firebase';
 
 import React from 'react';

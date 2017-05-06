@@ -6,7 +6,6 @@ import { getCurrentUser, onAuthStateChanged } from '../utils/auth';
 import Login from '../routes/Login';
 
 type Props = {
-  location: Object,
   component: Function,
 };
 

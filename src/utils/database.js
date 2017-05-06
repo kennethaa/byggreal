@@ -32,7 +32,7 @@ function getProperties(propertyType: 'homes' | 'lettings') {
       ).then(finnAds =>
         properties.map((property, index) =>
           Object.assign({}, property, {
-            finn_ad: finnAds[index] && finnAds[index].data,
+            finnAd: finnAds[index] && finnAds[index].data,
           })
         )
       );

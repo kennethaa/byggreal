@@ -1,28 +1,32 @@
+// @flow
+
 import React, { Component } from 'react';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
-import { getHomes } from '../utils/api';
+import { getHomes } from '../utils/database';
 import FinnAd from '../components/FinnAd';
 
-class Homes extends Component {
+type State = {
+  loading: boolean,
+  error?: string,
+  homes?: Array<Object>,
+};
+
+class Homes extends Component<void, {}, State> {
   static path = '/bolig-til-salgs';
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      loading: true,
-      error: false,
-      homes: undefined,
-    };
-  }
+  state = {
+    loading: true,
+    error: undefined,
+    homes: undefined,
+  };
 
   componentDidMount() {
     getHomes()
       .then(homes =>
         this.setState({
           loading: false,
-          error: false,
+          error: undefined,
           homes,
         })
       )
@@ -40,6 +44,8 @@ class Homes extends Component {
     if (loading) {
       return <Loading />;
     }
+
+    console.log(homes);
 
     if (error || !homes) {
       return <ErrorMessage error={error} />;

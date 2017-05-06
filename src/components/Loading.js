@@ -1,7 +1,17 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+
+import React, { PureComponent } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 
-class Loading extends PureComponent {
+type Props = {
+  size: number,
+};
+
+class Loading extends PureComponent<Props, Props, void> {
+  static defaultProps = {
+    size: 80,
+  };
+
   render() {
     return (
       <div className="row">
@@ -12,13 +22,5 @@ class Loading extends PureComponent {
     );
   }
 }
-
-Loading.defaultProps = {
-  size: 80,
-};
-
-Loading.propTypes = {
-  size: PropTypes.number.isRequired,
-};
 
 export default Loading;

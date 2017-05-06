@@ -1,31 +1,37 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+
+import React, { PureComponent } from 'react';
 import Paper from 'material-ui/Paper';
 import { grey200 } from 'material-ui/styles/colors';
 import typography from 'material-ui/styles/typography';
 
-class Feature extends PureComponent {
-  constructor(props, context) {
-    super(props, context);
+type Props = {
+  title: string,
+  backgroundColor?: string,
+  iconClassName?: string,
+  image?: string,
+};
 
-    this._handleMouseEnter = this._handleMouseEnter.bind(this);
-    this._handleMouseLeave = this._handleMouseLeave.bind(this);
+type State = {
+  zDepth: number,
+};
 
-    this.state = {
-      zDepth: 0,
-    };
-  }
+class Feature extends PureComponent<void, Props, State> {
+  state = {
+    zDepth: 0,
+  };
 
-  _handleMouseEnter() {
+  _handleMouseEnter = () => {
     this.setState({
       zDepth: 4,
     });
-  }
+  };
 
-  _handleMouseLeave() {
+  _handleMouseLeave = () => {
     this.setState({
       zDepth: 0,
     });
-  }
+  };
 
   render() {
     const { zDepth } = this.state;
@@ -68,12 +74,5 @@ class Feature extends PureComponent {
     );
   }
 }
-
-Feature.propTypes = {
-  title: PropTypes.string.isRequired,
-  backgroundColor: PropTypes.string,
-  iconClassName: PropTypes.string,
-  image: PropTypes.string,
-};
 
 export default Feature;

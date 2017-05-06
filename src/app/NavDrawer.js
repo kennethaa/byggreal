@@ -1,4 +1,6 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+
+import React, { PureComponent } from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -14,7 +16,15 @@ import Divider from 'material-ui/Divider';
 
 const SelectableList = makeSelectable(List);
 
-class NavDrawer extends PureComponent {
+type Props = {
+  loggedIn: boolean,
+  open: boolean,
+  onLeftIconButtonTouchTap: () => void,
+  location: Object,
+  onClickRoute: (event: Event, route: string) => void,
+};
+
+class NavDrawer extends PureComponent<void, Props, void> {
   render() {
     const {
       loggedIn,
@@ -117,13 +127,5 @@ class NavDrawer extends PureComponent {
     );
   }
 }
-
-NavDrawer.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
-  open: PropTypes.bool.isRequired,
-  onLeftIconButtonTouchTap: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
-  onClickRoute: PropTypes.func.isRequired,
-};
 
 export default NavDrawer;

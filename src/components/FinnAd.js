@@ -1,9 +1,18 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+
+import React, { PureComponent } from 'react';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 import Chip from 'material-ui/Chip';
 
-class FinnAd extends PureComponent {
+type Props = {
+  style: Object,
+  ad: Object,
+  warning: string,
+  muiTheme: Object,
+};
+
+class FinnAd extends PureComponent<void, Props, void> {
   render() {
     const { style, ad, warning, muiTheme } = this.props;
     const finnAd = ad && ad.finnAd;
@@ -42,12 +51,5 @@ class FinnAd extends PureComponent {
     );
   }
 }
-
-FinnAd.propTypes = {
-  style: PropTypes.object,
-  ad: PropTypes.object.isRequired,
-  warning: PropTypes.string.isRequired,
-  muiTheme: PropTypes.object.isRequired,
-};
 
 export default muiThemeable()(FinnAd);

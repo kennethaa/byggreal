@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react';
 import { grey200 } from 'material-ui/styles/colors';
 import typography from 'material-ui/styles/typography';
@@ -12,7 +14,7 @@ import carpenter from '../images/carpenter.jpg';
 import building from '../images/building.jpg';
 import wall from '../images/wall.jpg';
 
-class Main extends PureComponent {
+class Main extends PureComponent<void, {}, void> {
   static path = '/';
 
   render() {

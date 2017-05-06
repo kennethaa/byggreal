@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react';
 import { lightWhite, grey900, darkWhite } from 'material-ui/styles/colors';
 import typography from 'material-ui/styles/typography';
@@ -6,7 +8,7 @@ const FOOTER_ITEM_STYLE = {
   padding: 50,
 };
 
-class Footer extends PureComponent {
+class Footer extends PureComponent<void, {}, void> {
   render() {
     return (
       <div

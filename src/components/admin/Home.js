@@ -1,17 +1,27 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+
+import React, { PureComponent } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-class Home extends PureComponent {
-  constructor(props, context) {
-    super(props, context);
+type Props = {
+  home: Object,
+  notFound: boolean,
+  onClickSave: () => void,
+  onClickDelete: () => void,
+  loading: boolean,
+  homeNew: boolean,
+  onClickCreateNew: () => void,
+  onRequestClose: () => void,
+  name: string,
+};
 
-    this.onClickSave = this.onClickSave.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
-  }
+class Home extends PureComponent<void, Props, void> {
+  order: Object;
+  finnCode: Object;
 
-  onClickSave(event) {
+  onClickSave = (event: Event) => {
     event.preventDefault();
 
     const { home, onClickSave, homeNew, onClickCreateNew } = this.props;
@@ -28,16 +38,16 @@ class Home extends PureComponent {
     return onClickSave(home._id, {
       order,
     });
-  }
+  };
 
-  onClickDelete() {
+  onClickDelete = () => {
     const { home, onClickDelete } = this.props;
 
     if (confirm(`Er du sikker på at du vil slette finnCode ${home.finnCode}`)) {
       // eslint-disable-line no-alert
       onClickDelete(home._id);
     }
-  }
+  };
 
   render() {
     const {
@@ -128,17 +138,5 @@ class Home extends PureComponent {
     );
   }
 }
-
-Home.propTypes = {
-  home: PropTypes.object,
-  notFound: PropTypes.bool,
-  onClickSave: PropTypes.func.isRequired,
-  onClickDelete: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  homeNew: PropTypes.bool.isRequired,
-  onClickCreateNew: PropTypes.func.isRequired,
-  onRequestClose: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-};
 
 export default Home;
