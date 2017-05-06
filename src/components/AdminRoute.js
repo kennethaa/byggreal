@@ -19,16 +19,22 @@ class AdminRoute extends Component<void, Props, State> {
     isAuthenticated: getCurrentUser() ? true : undefined,
   };
 
+  removeListener: () => void;
+
   componentDidMount() {
     const { isAuthenticated } = this.state;
 
     if (isAuthenticated === undefined) {
-      onAuthStateChanged(user => {
+      this.removeListener = onAuthStateChanged(user => {
         this.setState({
           isAuthenticated: user ? true : false,
         });
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
   }
 
   render() {

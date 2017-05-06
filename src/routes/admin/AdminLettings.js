@@ -10,7 +10,7 @@ import {
   putLetting,
   deleteLetting,
   postLetting,
-} from '../../utils/api';
+} from '../../utils/database';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
@@ -43,16 +43,16 @@ class AdminLettings extends Component {
   onClickAd(ad) {
     const { history } = this.props;
 
-    history.push(`${AdminLettings.path}/${ad._id}`);
+    history.push(`${AdminLettings.path}/${ad.finnCode}`);
   }
 
-  onClickSave(lettingId, letting) {
+  onClickSave(finnCode, letting) {
     this.setState(
       {
         loadingLettingActive: true,
       },
       () =>
-        putLetting(lettingId, letting)
+        putLetting(finnCode, letting)
           .then(() =>
             this.getLettings().then(() =>
               this.props.history.push(AdminLettings.path)
@@ -67,8 +67,8 @@ class AdminLettings extends Component {
     );
   }
 
-  onClickDelete(lettingId) {
-    deleteLetting(lettingId)
+  onClickDelete(finnCode) {
+    deleteLetting(finnCode)
       .then(() =>
         this.getLettings().then(() =>
           this.props.history.push(AdminLettings.path)
@@ -112,7 +112,7 @@ class AdminLettings extends Component {
     const { match, history } = this.props;
     const { params } = match;
 
-    if (params.lettingId) {
+    if (params.finnCode) {
       return history.push(AdminLettings.path);
     }
 
@@ -159,7 +159,7 @@ class AdminLettings extends Component {
     }
 
     const lettingActive = lettings.find(
-      letting => letting._id === params.lettingId
+      letting => letting.finnCode === params.finnCode
     );
 
     return (
@@ -188,24 +188,24 @@ class AdminLettings extends Component {
                   <ContentAdd />
                 </FloatingActionButton>
               </Subheader>
-              {lettings.map((letting, index) => (
+              {lettings.map(letting => (
                 <AdminFinnAd
-                  key={index}
+                  key={letting.finnCode}
                   ad={letting}
-                  active={letting._id === params.lettingId}
+                  active={letting.finnCode === params.finnCode}
                   onClickAd={this.onClickAd}
                 />
               ))}
             </List>
           </div>
         </div>
-        {(params.lettingId || lettingNew) &&
+        {(params.finnCode || lettingNew) &&
           <Home
-            key={params.lettingId || 'new'}
+            key={params.finnCode || 'new'}
             home={lettingActive}
             homeNew={lettingNew}
             onClickCreateNew={this.onClickCreateNew}
-            notFound={!lettingNew && params.lettingId && !lettingActive}
+            notFound={!lettingNew && params.finnCode && !lettingActive}
             onClickSave={this.onClickSave}
             onClickDelete={this.onClickDelete}
             loading={loadingLettingActive}

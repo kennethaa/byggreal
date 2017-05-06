@@ -12,7 +12,7 @@ export function getHomes() {
         }
 
         return Promise.all(
-          homes.data.homes.map(home => finn(`finn/${home.finnkode}`, false))
+          homes.data.homes.map(home => finn(`finn/${home.finnCode}`, false))
         )
           .then(finnAds =>
             resolve(
@@ -38,7 +38,7 @@ export function getHomes() {
 //             }
 //
 //             return Promise.all(lettings.data.lettings.map((home) =>
-//                 finn(`finn/${home.finnkode}`, false)
+//                 finn(`finn/${home.finnCode}`, false)
 //             ))
 //             .then((finnAds) =>
 //                 resolve(lettings.data.lettings.map((letting, index) =>

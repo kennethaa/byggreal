@@ -25,17 +25,15 @@ class Login extends Component<void, Props, State> {
     loading: false,
   };
 
-  handleSubmit: (event: Event) => void;
+  removeListener: () => void;
   email: Object;
   password: Object;
 
-  constructor(props: Props) {
-    super(props);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
+  componentWillUnmount() {
+    this.removeListener();
   }
 
-  handleSubmit(event: Event) {
+  handleSubmit = (event: Event) => {
     event.preventDefault();
 
     const email = this.email.input.value;
@@ -51,7 +49,7 @@ class Login extends Component<void, Props, State> {
 
         login(email, password)
           .then(() => {
-            onAuthStateChanged(() => {
+            this.removeListener = onAuthStateChanged(() => {
               if (location.state && location.state.from) {
                 return history.replace(location.state.from);
               }
@@ -68,7 +66,7 @@ class Login extends Component<void, Props, State> {
           });
       }
     );
-  }
+  };
 
   render() {
     const { error, loading } = this.state;

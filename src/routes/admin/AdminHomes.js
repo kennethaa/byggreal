@@ -5,7 +5,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
-import { getHomes, putHome, deleteHome, postHome } from '../../utils/api';
+import { getHomes, putHome, deleteHome, postHome } from '../../utils/database';
+import '../../utils/database';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
@@ -38,16 +39,16 @@ class AdminHomes extends Component {
   onClickAd(ad) {
     const { history } = this.props;
 
-    history.push(`${AdminHomes.path}/${ad._id}`);
+    history.push(`${AdminHomes.path}/${ad.finnCode}`);
   }
 
-  onClickSave(homeId, home) {
+  onClickSave(finnCode, home) {
     this.setState(
       {
         loadingHomeActive: true,
       },
       () =>
-        putHome(homeId, home)
+        putHome(finnCode, home)
           .then(() =>
             this.getHomes().then(() => this.props.history.push(AdminHomes.path))
           )
@@ -60,8 +61,8 @@ class AdminHomes extends Component {
     );
   }
 
-  onClickDelete(homeId) {
-    deleteHome(homeId)
+  onClickDelete(finnCode) {
+    deleteHome(finnCode)
       .then(() =>
         this.getHomes().then(() => this.props.history.push(AdminHomes.path))
       )
@@ -103,7 +104,7 @@ class AdminHomes extends Component {
     const { match, history } = this.props;
     const { params } = match;
 
-    if (params.homeId) {
+    if (params.finnCode) {
       return history.push(AdminHomes.path);
     }
 
@@ -143,7 +144,7 @@ class AdminHomes extends Component {
       return <ErrorMessage error={error} />;
     }
 
-    const homeActive = homes.find(home => home._id === params.homeId);
+    const homeActive = homes.find(home => home.finnCode === params.finnCode);
 
     return (
       <div className="row">
@@ -171,24 +172,24 @@ class AdminHomes extends Component {
                   <ContentAdd />
                 </FloatingActionButton>
               </Subheader>
-              {homes.map((home, index) => (
+              {homes.map(home => (
                 <AdminFinnAd
-                  key={index}
+                  key={home.finnCode}
                   ad={home}
-                  active={home._id === params.homeId}
+                  active={home.finnCode === params.finnCode}
                   onClickAd={this.onClickAd}
                 />
               ))}
             </List>
           </div>
         </div>
-        {(params.homeId || homeNew) &&
+        {(params.finnCode || homeNew) &&
           <Home
-            key={params.homeId || 'new'}
+            key={params.finnCode || 'new'}
             home={homeActive}
             homeNew={homeNew}
             onClickCreateNew={this.onClickCreateNew}
-            notFound={!homeNew && params.homeId && !homeActive}
+            notFound={!homeNew && params.finnCode && !homeActive}
             onClickSave={this.onClickSave}
             onClickDelete={this.onClickDelete}
             loading={loadingHomeActive}

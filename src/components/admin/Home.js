@@ -18,9 +18,9 @@ class Home extends PureComponent {
     const order = this.order.input.value;
 
     if (homeNew) {
-      const finnkode = this.finnkode.input.value;
+      const finnCode = this.finnCode.input.value;
       return onClickCreateNew({
-        finnkode,
+        finnCode,
         order,
       });
     }
@@ -33,7 +33,7 @@ class Home extends PureComponent {
   onClickDelete() {
     const { home, onClickDelete } = this.props;
 
-    if (confirm(`Er du sikker på at du vil slette finnkode ${home.finnkode}`)) {
+    if (confirm(`Er du sikker på at du vil slette finnCode ${home.finnCode}`)) {
       // eslint-disable-line no-alert
       onClickDelete(home._id);
     }
@@ -92,12 +92,12 @@ class Home extends PureComponent {
               <TextField
                 fullWidth
                 floatingLabelText="Finnkode"
-                defaultValue={home && home.finnkode}
+                defaultValue={home && home.finnCode}
                 type="number"
                 required
                 min={1}
-                ref={finnkode => {
-                  this.finnkode = finnkode;
+                ref={finnCode => {
+                  this.finnCode = finnCode;
                 }}
                 disabled={!homeNew}
               />

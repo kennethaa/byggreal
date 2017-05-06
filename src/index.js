@@ -1,3 +1,5 @@
+import './utils/firebase';
+
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -20,8 +22,6 @@ import AdminLettings from './routes/admin/AdminLettings';
 
 injectTapEventPlugin();
 
-import './utils/firebase';
-
 render(
   <MuiThemeProvider muiTheme={getMuiTheme(getTheme())}>
     <Router>
@@ -32,11 +32,11 @@ render(
         <Route path={Login.path} component={Login} />
         <Route path={Logout.path} component={Logout} />
         <AdminRoute
-          path={`${AdminHomes.path}/:homeId?`}
+          path={`${AdminHomes.path}/:finnCode?`}
           component={AdminHomes}
         />
         <AdminRoute
-          path={`${AdminLettings.path}/:lettingId?`}
+          path={`${AdminLettings.path}/:finnCode?`}
           component={AdminLettings}
         />
       </App>

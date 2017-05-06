@@ -21,7 +21,7 @@ class AdminFinnAd extends PureComponent {
   render() {
     const { muiTheme } = this.context;
     const { active } = this.props;
-    const finnAd = this.props.ad && this.props.ad.finnAd;
+    const finnAd = this.props.ad && this.props.ad.finn_ad;
 
     if (!finnAd) {
       return null;

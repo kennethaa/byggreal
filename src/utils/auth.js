@@ -14,7 +14,7 @@ export function getCurrentUser() {
   return firebase.auth().currentUser;
 }
 
-type User = {
+export type User = {
   email: string,
   uid: string,
 };

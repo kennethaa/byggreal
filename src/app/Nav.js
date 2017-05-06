@@ -1,4 +1,6 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+
+import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -8,36 +10,46 @@ import NavDrawer from './NavDrawer';
 import { onAuthStateChanged } from '../utils/auth';
 import byggrealDark from '../images/byggreal_dark.png';
 import byggrealDarkHD from '../images/byggreal_dark_hd.png';
+import type { User } from '../utils/auth';
 
-class Nav extends PureComponent {
-  constructor(props, context) {
-    super(props, context);
+type Props = {
+  muiTheme: Object,
+  location: Object,
+  history: Object,
+};
 
-    this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
-    this._onClickRoute = this._onClickRoute.bind(this);
-    this._onTitleTouchTap = this._onTitleTouchTap.bind(this);
+type State = {
+  user: User | null,
+  open: boolean,
+};
 
-    this.state = {
-      user: null,
-      open: false,
-    };
-  }
+class Nav extends PureComponent<void, Props, State> {
+  state = {
+    user: null,
+    open: false,
+  };
+
+  removeListener: () => void;
 
   componentWillMount() {
-    onAuthStateChanged(user => {
+    this.removeListener = onAuthStateChanged(user => {
       this.setState({
         user,
       });
     });
   }
 
-  _onLeftIconButtonTouchTap() {
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
+  _onLeftIconButtonTouchTap = () => {
     this.setState({
       open: !this.state.open,
     });
-  }
+  };
 
-  _onClickRoute(event, route) {
+  _onClickRoute = (event: Event, route: string) => {
     const { history } = this.props;
 
     history.push(route);
@@ -45,13 +57,13 @@ class Nav extends PureComponent {
     this.setState({
       open: false,
     });
-  }
+  };
 
-  _onTitleTouchTap() {
+  _onTitleTouchTap = () => {
     const { history } = this.props;
 
     history.push('/');
-  }
+  };
 
   render() {
     const { user, open } = this.state;
@@ -104,11 +116,5 @@ class Nav extends PureComponent {
     );
   }
 }
-
-Nav.propTypes = {
-  muiTheme: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-};
 
 export default muiThemeable()(withRouter(Nav));
