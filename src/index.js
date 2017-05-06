@@ -9,14 +9,14 @@ import getTheme from './theme';
 import AdminRoute from './components/AdminRoute';
 
 import App from './app/App';
-import Main from './containers/Main';
-import Homes from './containers/Homes';
-import Lettings from './containers/Lettings';
-import Login from './containers/Login';
-import Logout from './containers/Logout';
+import Main from './routes/Main';
+import Homes from './routes/Homes';
+import Lettings from './routes/Lettings';
+import Login from './routes/Login';
+import Logout from './routes/Logout';
 
-import AdminHomes from './containers/admin/AdminHomes';
-import AdminLettings from './containers/admin/AdminLettings';
+import AdminHomes from './routes/admin/AdminHomes';
+import AdminLettings from './routes/admin/AdminLettings';
 
 injectTapEventPlugin();
 

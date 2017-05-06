@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { getCurrentUser, onAuthStateChanged } from '../utils/auth';
-import Login from '../containers/Login';
+import Login from '../routes/Login';
 
 type Props = {
   location: Object,
