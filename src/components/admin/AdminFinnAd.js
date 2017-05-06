@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent, PropTypes } from 'react';
 import { ListItem } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
@@ -5,14 +7,18 @@ import CommunicationChatBubble
   from 'material-ui/svg-icons/navigation/chevron-right';
 import { fade } from 'material-ui/utils/colorManipulator';
 
-class AdminFinnAd extends PureComponent {
-  constructor(props, context) {
-    super(props, context);
+type Props = {
+  ad: Object,
+  onClickAd: () => void,
+  active: boolean,
+};
 
-    this.onTouchTap = this.onTouchTap.bind(this);
-  }
+class AdminFinnAd extends PureComponent<void, Props, void> {
+  static contextTypes = {
+    muiTheme: PropTypes.object.isRequired,
+  };
 
-  onTouchTap() {
+  onTouchTap = () => {
     const { onClickAd, ad } = this.props;
 
     onClickAd(ad);
@@ -46,15 +52,5 @@ class AdminFinnAd extends PureComponent {
     );
   }
 }
-
-AdminFinnAd.contextTypes = {
-  muiTheme: PropTypes.object.isRequired,
-};
-
-AdminFinnAd.propTypes = {
-  ad: PropTypes.object.isRequired,
-  onClickAd: PropTypes.func.isRequired,
-  active: PropTypes.bool.isRequired,
-};
 
 export default AdminFinnAd;
