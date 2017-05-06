@@ -1,106 +1,115 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+
+import React, { Component } from 'react';
 import Subheader from 'material-ui/Subheader';
 import { List } from 'material-ui/List';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
-import { getHomes, putHome, deleteHome, postHome } from '../../utils/database';
+import {
+  getHomes,
+  // putHome,
+  // deleteHome,
+  // postHome
+} from '../../utils/database';
 import '../../utils/database';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
-class AdminHomes extends Component {
+type Props = {
+  history: Object,
+  match: Object,
+};
+
+type State = {
+  loading: boolean,
+  loadingHomeActive: boolean,
+  error?: string,
+  homes?: Array<Object>,
+  homeNew: boolean,
+};
+
+class AdminHomes extends Component<void, Props, State> {
   static path = '/admin/bolig-til-salgs';
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.onClickAd = this.onClickAd.bind(this);
-    this.onClickSave = this.onClickSave.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
-    this.onClickCreateNew = this.onClickCreateNew.bind(this);
-    this.onClickNew = this.onClickNew.bind(this);
-    this.onRequestClose = this.onRequestClose.bind(this);
-
-    this.state = {
-      loading: true,
-      loadingHomeActive: false,
-      error: false,
-      homes: undefined,
-      homeNew: false,
-    };
-  }
+  state = {
+    loading: true,
+    loadingHomeActive: false,
+    error: undefined,
+    homes: undefined,
+    homeNew: false,
+  };
 
   componentDidMount() {
     this.getHomes();
   }
 
-  onClickAd(ad) {
+  onClickAd = (ad: Object) => {
     const { history } = this.props;
 
     history.push(`${AdminHomes.path}/${ad.finnCode}`);
-  }
+  };
 
-  onClickSave(finnCode, home) {
+  onClickSave = (finnCode: string, home: Object) => {
     this.setState(
       {
         loadingHomeActive: true,
-      },
-      () =>
-        putHome(finnCode, home)
-          .then(() =>
-            this.getHomes().then(() => this.props.history.push(AdminHomes.path))
-          )
-          .catch(error =>
-            this.setState({
-              loading: false,
-              error: (error && error.message) || error,
-            })
-          )
+      }
+      // () =>
+      // putHome(finnCode, home)
+      //   .then(() =>
+      //     this.getHomes().then(() => this.props.history.push(AdminHomes.path))
+      //   )
+      //   .catch(error =>
+      //     this.setState({
+      //       loading: false,
+      //       error: (error && error.message) || error,
+      //     })
+      // )
     );
-  }
+  };
 
-  onClickDelete(finnCode) {
-    deleteHome(finnCode)
-      .then(() =>
-        this.getHomes().then(() => this.props.history.push(AdminHomes.path))
-      )
-      .catch(error =>
-        this.setState({
-          loading: false,
-          error: (error && error.message) || error,
-        })
-      );
-  }
+  onClickDelete = (finnCode: string) => {
+    // deleteHome(finnCode)
+    //   .then(() =>
+    //     this.getHomes().then(() => this.props.history.push(AdminHomes.path))
+    //   )
+    //   .catch(error =>
+    //     this.setState({
+    //       loading: false,
+    //       error: (error && error.message) || error,
+    //     })
+    //   );
+  };
 
-  onClickCreateNew(home) {
+  onClickCreateNew = (home: Object) => {
     this.setState(
       {
         loadingHomeActive: true,
-      },
-      () =>
-        postHome(home)
-          .then(() =>
-            this.getHomes().then(() => this.setState({ homeNew: false }))
-          )
-          .catch(error =>
-            this.setState({
-              loading: false,
-              loadingHomeActive: false,
-              error: (error && error.message) || error,
-            })
-          )
+      }
+      // () =>
+      //   postHome(home)
+      //     .then(() =>
+      //       this.getHomes().then(() => this.setState({ homeNew: false }))
+      //     )
+      //     .catch(error =>
+      //       this.setState({
+      //         loading: false,
+      //         loadingHomeActive: false,
+      //         error: (error && error.message) || error,
+      //       })
+      //     )
     );
-  }
+  };
 
-  onClickNew() {
+  onClickNew = () => {
     this.setState({
       homeNew: true,
     });
-  }
+  };
 
-  onRequestClose() {
+  onRequestClose = () => {
     const { match, history } = this.props;
     const { params } = match;
 
@@ -111,15 +120,15 @@ class AdminHomes extends Component {
     return this.setState({
       homeNew: false,
     });
-  }
+  };
 
-  getHomes() {
+  getHomes = () => {
     return getHomes()
       .then(homes =>
         this.setState({
           loading: false,
           loadingHomeActive: false,
-          error: false,
+          error: undefined,
           homes,
         })
       )
@@ -129,7 +138,7 @@ class AdminHomes extends Component {
           error: (error && error.message) || error,
         })
       );
-  }
+  };
 
   render() {
     const { loading, error, homes, loadingHomeActive, homeNew } = this.state;
@@ -200,10 +209,5 @@ class AdminHomes extends Component {
     );
   }
 }
-
-AdminHomes.propTypes = {
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-};
 
 export default AdminHomes;

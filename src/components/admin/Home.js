@@ -8,11 +8,11 @@ import TextField from 'material-ui/TextField';
 type Props = {
   home: Object,
   notFound: boolean,
-  onClickSave: () => void,
-  onClickDelete: () => void,
+  onClickSave: (finnCode: string, home: Object) => void,
+  onClickDelete: (finnCode: string) => void,
   loading: boolean,
   homeNew: boolean,
-  onClickCreateNew: () => void,
+  onClickCreateNew: (home: Object) => void,
   onRequestClose: () => void,
   name: string,
 };

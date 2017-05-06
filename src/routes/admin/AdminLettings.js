@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+
+import React, { Component } from 'react';
 import Subheader from 'material-ui/Subheader';
 import { List } from 'material-ui/List';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -7,108 +9,110 @@ import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
 import {
   getLettings,
-  putLetting,
-  deleteLetting,
-  postLetting,
+  // putLetting,
+  // deleteLetting,
+  // postLetting,
 } from '../../utils/database';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Home from '../../components/admin/Home';
 
-class AdminLettings extends Component {
+type Props = {
+  history: Object,
+  match: Object,
+};
+
+type State = {
+  loading: boolean,
+  loadingLettingActive: boolean,
+  error?: string,
+  lettings?: Array<Object>,
+  lettingNew: boolean,
+};
+
+class AdminLettings extends Component<void, Props, State> {
   static path = '/admin/bolig-til-leie';
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.onClickAd = this.onClickAd.bind(this);
-    this.onClickSave = this.onClickSave.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
-    this.onClickCreateNew = this.onClickCreateNew.bind(this);
-    this.onClickNew = this.onClickNew.bind(this);
-    this.onRequestClose = this.onRequestClose.bind(this);
-
-    this.state = {
-      loading: true,
-      loadingLettingActive: false,
-      error: false,
-      lettings: undefined,
-      lettingNew: false,
-    };
-  }
+  state = {
+    loading: true,
+    loadingLettingActive: false,
+    error: undefined,
+    lettings: undefined,
+    lettingNew: false,
+  };
 
   componentDidMount() {
     this.getLettings();
   }
 
-  onClickAd(ad) {
+  onClickAd = (ad: Object) => {
     const { history } = this.props;
 
     history.push(`${AdminLettings.path}/${ad.finnCode}`);
-  }
+  };
 
-  onClickSave(finnCode, letting) {
+  onClickSave = (finnCode: string, letting: Object) => {
     this.setState(
       {
         loadingLettingActive: true,
-      },
-      () =>
-        putLetting(finnCode, letting)
-          .then(() =>
-            this.getLettings().then(() =>
-              this.props.history.push(AdminLettings.path)
-            )
-          )
-          .catch(error =>
-            this.setState({
-              loading: false,
-              error: (error && error.message) || error,
-            })
-          )
+      }
+      // () =>
+      //   putLetting(finnCode, letting)
+      //     .then(() =>
+      //       this.getLettings().then(() =>
+      //         this.props.history.push(AdminLettings.path)
+      //       )
+      //     )
+      //     .catch(error =>
+      //       this.setState({
+      //         loading: false,
+      //         error: (error && error.message) || error,
+      //       })
+      //     )
     );
-  }
+  };
 
-  onClickDelete(finnCode) {
-    deleteLetting(finnCode)
-      .then(() =>
-        this.getLettings().then(() =>
-          this.props.history.push(AdminLettings.path)
-        )
-      )
-      .catch(error =>
-        this.setState({
-          loading: false,
-          error: (error && error.message) || error,
-        })
-      );
-  }
+  onClickDelete = (finnCode: string) => {
+    // deleteLetting(finnCode)
+    //   .then(() =>
+    //     this.getLettings().then(() =>
+    //       this.props.history.push(AdminLettings.path)
+    //     )
+    //   )
+    //   .catch(error =>
+    //     this.setState({
+    //       loading: false,
+    //       error: (error && error.message) || error,
+    //     })
+    //   );
+  };
 
-  onClickCreateNew(letting) {
+  onClickCreateNew = (letting: Object) => {
     this.setState(
       {
         loadingLettingActive: true,
-      },
-      () =>
-        postLetting(letting)
-          .then(() =>
-            this.getLettings().then(() => this.setState({ lettingNew: false }))
-          )
-          .catch(error =>
-            this.setState({
-              loading: false,
-              loadingLettingActive: false,
-              error: (error && error.message) || error,
-            })
-          )
+      }
+      // () =>
+      //   postLetting(letting)
+      //     .then(() =>
+      //       this.getLettings().then(() => this.setState({ lettingNew: false }))
+      //     )
+      //     .catch(error =>
+      //       this.setState({
+      //         loading: false,
+      //         loadingLettingActive: false,
+      //         error: (error && error.message) || error,
+      //       })
+      //     )
     );
-  }
+  };
 
-  onClickNew() {
+  onClickNew = () => {
     this.setState({
       lettingNew: true,
     });
-  }
+  };
 
-  onRequestClose() {
+  onRequestClose = () => {
     const { match, history } = this.props;
     const { params } = match;
 
@@ -119,15 +123,15 @@ class AdminLettings extends Component {
     return this.setState({
       lettingNew: false,
     });
-  }
+  };
 
-  getLettings() {
+  getLettings = () => {
     return getLettings()
       .then(lettings =>
         this.setState({
           loading: false,
           loadingLettingActive: false,
-          error: false,
+          error: undefined,
           lettings,
         })
       )
@@ -137,7 +141,7 @@ class AdminLettings extends Component {
           error: (error && error.message) || error,
         })
       );
-  }
+  };
 
   render() {
     const {
@@ -216,10 +220,5 @@ class AdminLettings extends Component {
     );
   }
 }
-
-AdminLettings.propTypes = {
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-};
 
 export default AdminLettings;
