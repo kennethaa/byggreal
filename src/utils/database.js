@@ -6,9 +6,7 @@ import type { Property } from './types';
 
 const database = firebase.database();
 
-function getProperties(
-  ref: 'homes' | 'lettings'
-) {
+function getProperties(ref: 'homes' | 'lettings') {
   return database
     .ref(ref)
     .once('value')
@@ -19,7 +17,7 @@ function getProperties(
 
         h.push({
           finnCode,
-          property
+          property,
         });
 
         return h;

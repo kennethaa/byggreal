@@ -7,12 +7,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
-import {
-  getHomes,
-  putHome,
-  deleteHome,
-  postHome
-} from '../../utils/database';
+import { getHomes, putHome, deleteHome, postHome } from '../../utils/database';
 import '../../utils/database';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
 import Property from '../../components/admin/Property';
@@ -58,16 +53,16 @@ class AdminHomes extends Component<void, Props, State> {
         loadingHomeActive: true,
       },
       () =>
-      putHome(finnCode, home)
-        .then(() =>
-          this.getHomes().then(() => this.props.history.push(AdminHomes.path))
-        )
-        .catch(error =>
-          this.setState({
-            loading: false,
-            error: (error && error.message) || error,
-          })
-      )
+        putHome(finnCode, home)
+          .then(() =>
+            this.getHomes().then(() => this.props.history.push(AdminHomes.path))
+          )
+          .catch(error =>
+            this.setState({
+              loading: false,
+              error: (error && error.message) || error,
+            })
+          )
     );
   };
 

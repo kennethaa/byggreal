@@ -1,10 +1,8 @@
 export type Property = {
-  order: number
+  order: number,
 };
 
-export type FinnAd = {
-
-};
+export type FinnAd = {};
 
 export type User = {
   email: string,
