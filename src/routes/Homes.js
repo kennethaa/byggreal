@@ -46,8 +46,6 @@ class Homes extends Component<void, {}, State> {
       return <Loading />;
     }
 
-    console.log(homes);
-
     if (error || !homes) {
       return <ErrorMessage error={error} />;
     }
