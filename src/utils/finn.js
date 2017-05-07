@@ -1,7 +1,6 @@
 // @flow
 
-const API_URL =
-  process.env.REACT_APP_API_URL || 'https://api.byggreal.kennethaasan.no';
+const API_URL = 'https://api.kennethaasan.no';
 
 export default function finn(feed: string, required: boolean = true) {
   return new Promise((resolve, reject) =>
