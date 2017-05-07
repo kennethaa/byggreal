@@ -9,13 +9,14 @@ import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
 import {
   getHomes,
-  // putHome,
-  // deleteHome,
-  // postHome
+  putHome,
+  deleteHome,
+  postHome
 } from '../../utils/database';
 import '../../utils/database';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
-import Home from '../../components/admin/Home';
+import Property from '../../components/admin/Property';
+import type { Property as PropertyType } from '../../utils/types';
 
 type Props = {
   history: Object,
@@ -26,7 +27,7 @@ type State = {
   loading: boolean,
   loadingHomeActive: boolean,
   error?: string,
-  homes?: Array<Object>,
+  homes?: Array<PropertyType>,
   homeNew: boolean,
 };
 
@@ -51,55 +52,55 @@ class AdminHomes extends Component<void, Props, State> {
     history.push(`${AdminHomes.path}/${ad.finnCode}`);
   };
 
-  onClickSave = (finnCode: string, home: Object) => {
+  onClickSave = (finnCode: string, home: PropertyType) => {
     this.setState(
       {
         loadingHomeActive: true,
-      }
-      // () =>
-      // putHome(finnCode, home)
-      //   .then(() =>
-      //     this.getHomes().then(() => this.props.history.push(AdminHomes.path))
-      //   )
-      //   .catch(error =>
-      //     this.setState({
-      //       loading: false,
-      //       error: (error && error.message) || error,
-      //     })
-      // )
+      },
+      () =>
+      putHome(finnCode, home)
+        .then(() =>
+          this.getHomes().then(() => this.props.history.push(AdminHomes.path))
+        )
+        .catch(error =>
+          this.setState({
+            loading: false,
+            error: (error && error.message) || error,
+          })
+      )
     );
   };
 
   onClickDelete = (finnCode: string) => {
-    // deleteHome(finnCode)
-    //   .then(() =>
-    //     this.getHomes().then(() => this.props.history.push(AdminHomes.path))
-    //   )
-    //   .catch(error =>
-    //     this.setState({
-    //       loading: false,
-    //       error: (error && error.message) || error,
-    //     })
-    //   );
+    deleteHome(finnCode)
+      .then(() =>
+        this.getHomes().then(() => this.props.history.push(AdminHomes.path))
+      )
+      .catch(error =>
+        this.setState({
+          loading: false,
+          error: (error && error.message) || error,
+        })
+      );
   };
 
-  onClickCreateNew = (home: Object) => {
+  onClickCreateNew = (finnCode: string, home: PropertyType) => {
     this.setState(
       {
         loadingHomeActive: true,
-      }
-      // () =>
-      //   postHome(home)
-      //     .then(() =>
-      //       this.getHomes().then(() => this.setState({ homeNew: false }))
-      //     )
-      //     .catch(error =>
-      //       this.setState({
-      //         loading: false,
-      //         loadingHomeActive: false,
-      //         error: (error && error.message) || error,
-      //       })
-      //     )
+      },
+      () =>
+        postHome(finnCode, home)
+          .then(() =>
+            this.getHomes().then(() => this.setState({ homeNew: false }))
+          )
+          .catch(error =>
+            this.setState({
+              loading: false,
+              loadingHomeActive: false,
+              error: (error && error.message) || error,
+            })
+          )
     );
   };
 
@@ -193,9 +194,10 @@ class AdminHomes extends Component<void, Props, State> {
           </div>
         </div>
         {(params.finnCode || homeNew) &&
-          <Home
+          <Property
             key={params.finnCode || 'new'}
-            home={homeActive}
+            finnCode={params.finnCode}
+            property={homeActive && homeActive.property}
             homeNew={homeNew}
             onClickCreateNew={this.onClickCreateNew}
             notFound={!homeNew && params.finnCode && !homeActive}

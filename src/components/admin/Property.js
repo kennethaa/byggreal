@@ -4,54 +4,55 @@ import React, { PureComponent } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import type { Property as PropertyType } from '../../utils/types';
 
 type Props = {
-  home: Object,
+  finnCode: string,
+  property: PropertyType,
   notFound: boolean,
-  onClickSave: (finnCode: string, home: Object) => void,
+  onClickSave: (finnCode: string, home: PropertyType) => void,
   onClickDelete: (finnCode: string) => void,
   loading: boolean,
   homeNew: boolean,
-  onClickCreateNew: (home: Object) => void,
+  onClickCreateNew: (finnCode: string, home: PropertyType) => void,
   onRequestClose: () => void,
   name: string,
 };
 
-class Home extends PureComponent<void, Props, void> {
+class Property extends PureComponent<void, Props, void> {
   order: Object;
   finnCode: Object;
 
   onClickSave = (event: Event) => {
     event.preventDefault();
 
-    const { home, onClickSave, homeNew, onClickCreateNew } = this.props;
-    const order = this.order.input.value;
+    const { finnCode, onClickSave, homeNew, onClickCreateNew } = this.props;
+
+    const property = {
+      order: this.order.input.value,
+    };
 
     if (homeNew) {
       const finnCode = this.finnCode.input.value;
-      return onClickCreateNew({
-        finnCode,
-        order,
-      });
+      return onClickCreateNew(finnCode, property);
     }
 
-    return onClickSave(home._id, {
-      order,
-    });
+    return onClickSave(finnCode, property);
   };
 
   onClickDelete = () => {
-    const { home, onClickDelete } = this.props;
+    const { finnCode, onClickDelete } = this.props;
 
-    if (confirm(`Er du sikker på at du vil slette finnCode ${home.finnCode}`)) {
+    if (confirm(`Er du sikker på at du vil slette finnCode ${finnCode}`)) {
       // eslint-disable-line no-alert
-      onClickDelete(home._id);
+      onClickDelete(finnCode);
     }
   };
 
   render() {
     const {
-      home,
+      finnCode,
+      property,
       notFound,
       loading,
       homeNew,
@@ -63,7 +64,7 @@ class Home extends PureComponent<void, Props, void> {
 
     let title = `Ny ${name}`;
 
-    if (home) {
+    if (property) {
       title = `Rediger ${name}`;
     } else if (notFound) {
       title = 'Ikke funnet';
@@ -102,7 +103,7 @@ class Home extends PureComponent<void, Props, void> {
               <TextField
                 fullWidth
                 floatingLabelText="Finnkode"
-                defaultValue={home && home.finnCode}
+                defaultValue={finnCode}
                 type="number"
                 required
                 min={1}
@@ -123,7 +124,7 @@ class Home extends PureComponent<void, Props, void> {
               <TextField
                 fullWidth
                 floatingLabelText="Rekkefølge"
-                defaultValue={home && home.order}
+                defaultValue={property && property.order}
                 type="number"
                 min={1}
                 ref={order => {
@@ -139,4 +140,4 @@ class Home extends PureComponent<void, Props, void> {
   }
 }
 
-export default Home;
+export default Property;

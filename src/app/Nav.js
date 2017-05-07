@@ -10,7 +10,7 @@ import NavDrawer from './NavDrawer';
 import { onAuthStateChanged } from '../utils/auth';
 import byggrealDark from '../images/byggreal_dark.png';
 import byggrealDarkHD from '../images/byggreal_dark_hd.png';
-import type { User } from '../utils/auth';
+import type { User } from '../utils/types';
 
 type Props = {
   muiTheme: Object,

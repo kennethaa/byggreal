@@ -5,11 +5,12 @@ import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import { getHomes } from '../utils/database';
 import FinnAd from '../components/FinnAd';
+import type { Property } from '../utils/types';
 
 type State = {
   loading: boolean,
   error?: string,
-  homes?: Array<Object>,
+  homes?: Array<Property>,
 };
 
 class Homes extends Component<void, {}, State> {

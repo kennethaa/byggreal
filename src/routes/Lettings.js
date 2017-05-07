@@ -5,11 +5,12 @@ import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import { getLettings } from '../utils/database';
 import FinnAd from '../components/FinnAd';
+import type { Property } from '../utils/types';
 
 type State = {
   loading: boolean,
   error?: string,
-  lettings?: Array<Object>,
+  lettings?: Array<Property>,
 };
 
 class Lettings extends Component<void, {}, State> {

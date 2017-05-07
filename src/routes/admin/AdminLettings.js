@@ -9,12 +9,13 @@ import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
 import {
   getLettings,
-  // putLetting,
-  // deleteLetting,
-  // postLetting,
+  putLetting,
+  deleteLetting,
+  postLetting,
 } from '../../utils/database';
 import AdminFinnAd from '../../components/admin/AdminFinnAd';
-import Home from '../../components/admin/Home';
+import Property from '../../components/admin/Property';
+import type { Property as PropertyType } from '../../utils/types';
 
 type Props = {
   history: Object,
@@ -25,7 +26,7 @@ type State = {
   loading: boolean,
   loadingLettingActive: boolean,
   error?: string,
-  lettings?: Array<Object>,
+  lettings?: Array<PropertyType>,
   lettingNew: boolean,
 };
 
@@ -50,59 +51,59 @@ class AdminLettings extends Component<void, Props, State> {
     history.push(`${AdminLettings.path}/${ad.finnCode}`);
   };
 
-  onClickSave = (finnCode: string, letting: Object) => {
+  onClickSave = (finnCode: string, letting: PropertyType) => {
     this.setState(
       {
         loadingLettingActive: true,
-      }
-      // () =>
-      //   putLetting(finnCode, letting)
-      //     .then(() =>
-      //       this.getLettings().then(() =>
-      //         this.props.history.push(AdminLettings.path)
-      //       )
-      //     )
-      //     .catch(error =>
-      //       this.setState({
-      //         loading: false,
-      //         error: (error && error.message) || error,
-      //       })
-      //     )
+      },
+      () =>
+        putLetting(finnCode, letting)
+          .then(() =>
+            this.getLettings().then(() =>
+              this.props.history.push(AdminLettings.path)
+            )
+          )
+          .catch(error =>
+            this.setState({
+              loading: false,
+              error: (error && error.message) || error,
+            })
+          )
     );
   };
 
   onClickDelete = (finnCode: string) => {
-    // deleteLetting(finnCode)
-    //   .then(() =>
-    //     this.getLettings().then(() =>
-    //       this.props.history.push(AdminLettings.path)
-    //     )
-    //   )
-    //   .catch(error =>
-    //     this.setState({
-    //       loading: false,
-    //       error: (error && error.message) || error,
-    //     })
-    //   );
+    deleteLetting(finnCode)
+      .then(() =>
+        this.getLettings().then(() =>
+          this.props.history.push(AdminLettings.path)
+        )
+      )
+      .catch(error =>
+        this.setState({
+          loading: false,
+          error: (error && error.message) || error,
+        })
+      );
   };
 
-  onClickCreateNew = (letting: Object) => {
+  onClickCreateNew = (finnCode: string, letting: PropertyType) => {
     this.setState(
       {
         loadingLettingActive: true,
-      }
-      // () =>
-      //   postLetting(letting)
-      //     .then(() =>
-      //       this.getLettings().then(() => this.setState({ lettingNew: false }))
-      //     )
-      //     .catch(error =>
-      //       this.setState({
-      //         loading: false,
-      //         loadingLettingActive: false,
-      //         error: (error && error.message) || error,
-      //       })
-      //     )
+      },
+      () =>
+        postLetting(finnCode, letting)
+          .then(() =>
+            this.getLettings().then(() => this.setState({ lettingNew: false }))
+          )
+          .catch(error =>
+            this.setState({
+              loading: false,
+              loadingLettingActive: false,
+              error: (error && error.message) || error,
+            })
+          )
     );
   };
 
@@ -204,9 +205,10 @@ class AdminLettings extends Component<void, Props, State> {
           </div>
         </div>
         {(params.finnCode || lettingNew) &&
-          <Home
+          <Property
             key={params.finnCode || 'new'}
-            home={lettingActive}
+            finnCode={params.finnCode}
+            property={lettingActive && lettingActive.property}
             homeNew={lettingNew}
             onClickCreateNew={this.onClickCreateNew}
             notFound={!lettingNew && params.finnCode && !lettingActive}
